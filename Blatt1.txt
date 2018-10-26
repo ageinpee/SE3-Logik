@@ -57,12 +57,44 @@ Aufg. 2
       A = klaus;
       A = andrea.
     f)
-      ?-
+      ?- mutter_von(Mutter,Kind).
+      Mutter = marie,
+      Kind = hans 
+      Mutter = marie,
+      Kind = helga 
+      Mutter = julia,
+      Kind = otto 
+      Mutter = barbara,
+      Kind = klaus 
+      Mutter = barbara,
+      Kind = andrea 
+      Mutter = charlotte,
+      Kind = barbara 
+      Mutter = charlotte,
+      Kind = magdalena.
+      ?- vater_von(Vater, Kind).
+      Vater = otto,
+      Kind = hans 
+      Vater = otto,
+      Kind = helga 
+      Vater = gerd,
+      Kind = otto 
+      Vater = johannes,
+      Kind = klaus 
+      Vater = johannes,
+      Kind = andrea 
+      Vater = walter,
+      Kind = barbara 
+      Vater = walter,
+      Kind = magdalena.
     g)
-      ?-
+      ?- not(vater_von(klaus, A)).
+      true.
     h)
-      ?-
+      ?- not(mutter_von(barbara, A)).
+      false.
     i)
-      ?-
+      ?- not(not(mutter_von(barbara, A))).
+      true.
   2)
   3)
