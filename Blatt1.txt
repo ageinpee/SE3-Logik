@@ -97,4 +97,12 @@ Aufg. 2
       ?- not(not(mutter_von(barbara, A))).
       true.
   2)
+    ?- mutter_von(charlotte, Eltern) , (mutter_von(Eltern, Kind); vater_von(Eltern, Kind)).
+    Eltern = barbara,
+    Kind = klaus 
+    Eltern = barbara,
+    Kind = andrea 
+    false.
   3)
+    Er zeigt an, was im "Hintergrund" passiert, also eine Art debug-mode. 
+    Die "/n" steht für steht ob Argumente und welche übergeben werden.
