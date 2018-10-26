@@ -40,3 +40,29 @@ Aufg. 1
 Aufg. 2
 -------------
   1)
+    a)
+      ?- vater_von(johannes, klaus).
+      true.
+    b)
+      ?- mutter_von(A, helga).
+      A = marie.
+    c)
+      ?- mutter_von(A, hans).
+      A = agathe.
+    d)
+      ?- mutter_von(A, marie).
+      false.
+    e)
+      ?- vater_von(johannes, A)
+      A = klaus;
+      A = andrea.
+    f)
+      ?-
+    g)
+      ?-
+    h)
+      ?-
+    i)
+      ?-
+  2)
+  3)
