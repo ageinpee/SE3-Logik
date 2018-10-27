@@ -105,4 +105,25 @@ Aufg. 2
     false.
   3)
     Er zeigt an, was im "Hintergrund" passiert, also eine Art debug-mode. 
-    Die "/n" steht für steht ob Argumente und welche übergeben werden.
+    Die "/n" steht für ob Argumente und welche übergeben werden.
+    
+    Die Systemausgaben zeigen drei Informationen:
+    Port: (n) Ziel ?
+    
+    a)
+      Port
+      Im Vier-Port-Modell sind die vier Ports call, redo, exit und fail. 
+      call ruft ein Prädikat auf. 
+      redo ruft das Prädikat nach dem ersten bzw. den ersten Treffern wieder auf.
+      exit beendet ein Prädikat mit Treffer(n).
+      fail beendet ein Prädikat ohne Treffer.
+      
+    b)
+      n steht für die aktuelle Rekusionstiefe.
+      
+    c)
+      Ziel
+      Das Ziel des aktuellen Rekursionsdurchlaufs wird gezeigt.
+      Besteht noch keine Bindung einer Variable an ein Objekt, 
+      bleibt die Variable nichtinstanziiert. 
+      Im Zielprädikat sieht man dann anstelle der Variable so was wie _2776.
