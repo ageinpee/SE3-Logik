@@ -1,0 +1,151 @@
+% Ich traue mir nicht zu, die bisherigen Lösungen gründlich zu ändern.
+% Daher schreibe ich mögliche Abweichungen hier auf.
+
+
+Aufg 2
+---------------
+
+  2.)   ?- produkt(PId, Kat, Tit, Aut, Vers, Ers, Lag), Kat=dvd, Lag>100.
+	false.
+	
+	% Ich denke, dass die Aufgabe 2.2 ein Versehen ist. 
+	% Die Anfrage trifft auf die Datenbank überhaupt nicht zu.
+	% Zutreffend wäre diese Anfrage (gegenüber Aufgabe 2.1):
+	% Von welchen Büchern sind noch mehr als 100 Stück im Lager?
+	
+        ?- produkt(PId, Kat, Tit, Aut, Vers, Ers, Lag), Kat=buch, Lag>100.
+        
+        PId = 12346,
+        Kat = buch,
+        Tit = hoffnung,
+        Aut = sand_molly,
+        Vers = kasper,
+        Ers = 2015,
+        Lag = 319 ;
+        
+        PId = 12347,
+        Kat = buch,
+        Tit = winterzeit,
+        Aut = wolf_michael,
+        Vers = meister,
+        Ers = 2011,
+        Lag = 204 ;
+        false.
+
+  3.)	?- (verkauft(PId1, Jah1, Pre1, _), Jah1=2012, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
+	   (verkauft(PId2, Jah2, Pre2, _), Jah2=2011, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Pre1<Pre2.
+	   
+        % Die Anfrage lässt sich anderweitig formulieren:
+        
+        ?- verkauft(PId1, Jah1, Pre1, _),
+        |    verkauft(PId2, Jah2, Pre2, _),
+        |    Jah1 is 2012,
+        |    Jah2 is Jah1-1,
+        |    Pre1<Pre2.
+        
+        PId1 = 12345,
+        Jah1 = 2012,
+        Pre1 = 24,
+        PId2 = 12347,
+        Jah2 = 2011,
+        Pre2 = 39 ;
+        
+        PId1 = 12345,
+        Jah1 = 2012,
+        Pre1 = 24,
+        PId2 = 12348,
+        Jah2 = 2011,
+        Pre2 = 39 ;
+        false.
+                
+        % Allerdings bin ich mir nicht sicher, 
+        % ob die Anfrage zu der Aufgabestellung passt.
+        
+        % Die jetzige Anfrage wird nämlich so beantwortet,
+        % dass z.B. das Buch "Sonnenuntergang" (12345)
+        % im Jahr 2011 einen tieferen Preis (Pre1 = 24) hat als 
+        % das Buch "Winterzeit" (12347) den Preis (Pre2 = 39)
+        % im Jahr 2011.
+        
+        % Es scheint mir absurd, dass man den Preis eines Buches
+        % in einem Jahr mit dem Preis von irgendeinem Buch 
+        % im Vorjahr vergleicht.
+        
+        % Die Aufgabestellung lautet:
+        % Für welche Bücher wurde im Jahr 2012 
+        % gegenüber dem Vorjahr der Preis gesenkt?
+        
+        % (Aber) Wenn wir die Anfrage so einschränken, dass
+        % ein Buch nur mit sich selbst verglichen wird,
+        % dann sieht die Anfrage so aus:
+        
+        ?- verkauft(PId, Jah1, Pre1, _),
+        |    verkauft(PId, Jah2, Pre2, _),
+        |    Jah1 is 2012,
+        |    Jah2 is Jah1-1,
+        |    Pre1<Pre2.
+        false.
+        
+  4.)   ?- (verkauft(PId1, Jah1, _, Ver1), Jah1=2013, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
+	   		(verkauft(PId2, Jah2, _, Ver2), Jah2=2012, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Ver1>Ver2.
+	   		
+	% Die Anfrage lässt sich auch anderweitig formulieren 
+	% wie bei Aufgabe 2.3:
+	
+        ?- verkauft(PId1, Jah1, _, Ver1),
+        |    verkauft(PId2, Jah2, _, Ver2),
+        |    Jah1 is 2013,
+        |    Jah2 is Jah1-1,
+        |    Ver1>Ver2.
+
+        PId1 = PId2, PId2 = 12345,
+        Jah1 = 2013,
+        Ver1 = 350,
+        Jah2 = 2012,
+        Ver2 = 270 ;
+
+        PId1 = 12345,
+        Jah1 = 2013,
+        Ver1 = 350,
+        PId2 = 12347,
+        Jah2 = 2012,
+        Ver2 = 23 ;
+
+        PId1 = 12345,
+        Jah1 = 2013,
+        Ver1 = 350,
+        PId2 = 12348,
+        Jah2 = 2012,
+        Ver2 = 0 ;
+
+        PId1 = 12347,
+        Jah1 = 2013,
+        Ver1 = 11,
+        PId2 = 12348,
+        Jah2 = 2012,
+        Ver2 = 0 ;
+        false.
+        
+        % Allerdings habe ich das gleiche Problem mit der Aufgabestellung
+        % wie bei Aufgabe 2.3.
+        % Wenn die Anfrage wieder so eingeschränkt wird, dass 
+        % ein Buch nur mit sich selbst verglichen wird,
+        % dann sieht die Anfrage so aus:
+        
+        ?- verkauft(PId, Jah1, _, Ver1),
+        |    verkauft(PId, Jah2, _, Ver2),
+        |    Jah1 is 2013,
+        |    Jah2 is Jah1-1,
+        |    Ver1>Ver2.
+
+        PId = 12345,
+        Jah1 = 2013,
+        Ver1 = 350,
+        Jah2 = 2012,
+        Ver2 = 270 ;
+        false.
+        
+
+
+ 
+
