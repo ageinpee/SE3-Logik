@@ -1,0 +1,66 @@
+Blatt 2
+----------------------------------------------------------
+Aufg. 1
+-------------
+?- mutter_von(P1, X), vater_von(X, P2).
+P1 = julia,
+X = otto,
+P2 = hans ;
+P1 = julia,
+X = otto,
+P2 = helga ;
+false.
+
+-->	Hans und Helga sind die Enkel von Julia, und zwar so dass Otto der Sohn von Julia ist und der Vater von hans und helga
+	Sinnvolle Bezeichner für P1: Großmutter
+				  X: Vater
+				 P2: Enkel
+
+?- mutter_von(X, P1), mutter_von(X, P2), P1\=P2.
+X = marie,
+P1 = hans,
+P2 = helga ;
+X = marie,
+P1 = helga,
+P2 = hans ;
+X = barbara,
+P1 = klaus,
+P2 = andrea ;
+X = barbara,
+P1 = andrea,
+P2 = klaus ;
+X = charlotte,
+P1 = barbara,
+P2 = magdalena ;
+X = charlotte,
+P1 = magdalena,
+P2 = barbara ;
+false.
+
+-->	P1 und P2 sind verschiedene Geschwister mit der selber Mutter X. 
+	Sinnvolle Bezeichner für P1: Geschwister1
+				 P2: Geschwister2
+				  X: Mutter
+
+?- vater_von(X,P1), mutter_von(Y,X), mutter_von(Y,Z), mutter_von(Z,P2), X\=Z.
+false.
+
+-->	Die Anfrage fragt ab, ob der Vater von P1 eine weitere Schwester mütterlicherseits hat, die ein Kind hat. 
+	Oder anders: Hat P1 eine Cousine/einen Cousin, die/der aus dessen Mutter direkt mit dem Vater von P1 verwandt ist. 
+	Sinnvolle Bezeichner für P1: Cousin_e1
+				 P2: Cousin_e2
+				  X: Vater_von_1
+				  Y: Großmutter
+				  Z: Mutter_von_2
+
+?- mutter_von(X,P1), mutter_von(Y,P2), vater_von(Z,P1), vater_von(Z,P2), P1\=P2, X\=Y.
+false.
+
+-->	Die Anfrage fragt, ob die Datenbank zwei Halb-Geschwister mit gemeinsamem Vater und unterschiedlichen Müttern enthält. 
+	Sinnvolle Bezeichner für P1: Halb_Geschwister1
+				 P2: Halb_Geschwister2
+				  X: Mutter1
+				  Y: Mutter2
+				  Z: Vater
+Aufg 2
+----------------		

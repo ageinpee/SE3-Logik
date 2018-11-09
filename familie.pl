@@ -12,6 +12,7 @@ mutter_von( barbara , klaus ).
 mutter_von( barbara , andrea ).
 mutter_von( charlotte , barbara ).
 mutter_von( charlotte , magdalena ).
+mutter_von( mama-lauda, nicki-lauda).
 
 
 % vater_von( Vater , Kind ).
