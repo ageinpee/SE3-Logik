@@ -63,4 +63,26 @@ false.
 				  Y: Mutter2
 				  Z: Vater
 Aufg 2
-----------------		
+---------------
+  1.)	?- produkt(PId, Kat, Tit, Aut, Ver, Ers, Lag), Lag=0.
+	PId = 12348,
+	Kat = buch,
+	Tit = blutrache,
+	Aut = wolf_michael,
+	Ver = meister,
+	Ers = 2007,
+	Lag = 0 ;
+	false.
+
+  2.)   ?- produkt(PId, Kat, Tit, Aut, Vers, Ers, Lag), Kat=dvd, Lag>100.
+	false.
+
+  3.)	?- (verkauft(PId1, Jah1, Pre1, _), Jah=2012, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
+	   (verkauft(PId2, Jah2, Pre2, _), Jah=2011, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Pre1<Pre2.
+	false.
+
+  4.)   ?- (verkauft(PId1, Jah1, _, Ver1), Jah=2013, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)), 
+	   (verkauft(PId2, Jah2, _, Ver2), Jah=2012, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Ver1>Ver2.
+	false. --> Ergebnis noch Falsch.
+
+  5.)	?- (
