@@ -12,7 +12,7 @@ P2 = helga ;
 false.
 
 -->	Hans und Helga sind die Enkel von Julia, und zwar so dass Otto der Sohn von Julia ist und der Vater von hans und helga
-	Sinnvolle Bezeichner für P1: Großmutter
+	Sinnvolle Bezeichner fï¿½r P1: Groï¿½mutter
 				  X: Vater
 				 P2: Enkel
 
@@ -37,27 +37,27 @@ P1 = magdalena,
 P2 = barbara ;
 false.
 
--->	P1 und P2 sind verschiedene Geschwister mit der selber Mutter X. 
-	Sinnvolle Bezeichner für P1: Geschwister1
+-->	P1 und P2 sind verschiedene Geschwister mit der selber Mutter X.
+	Sinnvolle Bezeichner fï¿½r P1: Geschwister1
 				 P2: Geschwister2
 				  X: Mutter
 
 ?- vater_von(X,P1), mutter_von(Y,X), mutter_von(Y,Z), mutter_von(Z,P2), X\=Z.
 false.
 
--->	Die Anfrage fragt ab, ob der Vater von P1 eine weitere Schwester mütterlicherseits hat, die ein Kind hat. 
-	Oder anders: Hat P1 eine Cousine/einen Cousin, die/der aus dessen Mutter direkt mit dem Vater von P1 verwandt ist. 
-	Sinnvolle Bezeichner für P1: Cousin_e1
+-->	Die Anfrage fragt ab, ob der Vater von P1 eine weitere Schwester mï¿½tterlicherseits hat, die ein Kind hat.
+	Oder anders: Hat P1 eine Cousine/einen Cousin, die/der aus dessen Mutter direkt mit dem Vater von P1 verwandt ist.
+	Sinnvolle Bezeichner fï¿½r P1: Cousin_e1
 				 P2: Cousin_e2
 				  X: Vater_von_1
-				  Y: Großmutter
+				  Y: Groï¿½mutter
 				  Z: Mutter_von_2
 
 ?- mutter_von(X,P1), mutter_von(Y,P2), vater_von(Z,P1), vater_von(Z,P2), P1\=P2, X\=Y.
 false.
 
--->	Die Anfrage fragt, ob die Datenbank zwei Halb-Geschwister mit gemeinsamem Vater und unterschiedlichen Müttern enthält. 
-	Sinnvolle Bezeichner für P1: Halb_Geschwister1
+-->	Die Anfrage fragt, ob die Datenbank zwei Halb-Geschwister mit gemeinsamem Vater und unterschiedlichen Mï¿½ttern enthï¿½lt.
+	Sinnvolle Bezeichner fï¿½r P1: Halb_Geschwister1
 				 P2: Halb_Geschwister2
 				  X: Mutter1
 				  Y: Mutter2
@@ -77,12 +77,61 @@ Aufg 2
   2.)   ?- produkt(PId, Kat, Tit, Aut, Vers, Ers, Lag), Kat=dvd, Lag>100.
 	false.
 
-  3.)	?- (verkauft(PId1, Jah1, Pre1, _), Jah=2012, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
-	   (verkauft(PId2, Jah2, Pre2, _), Jah=2011, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Pre1<Pre2.
+  3.)	?- (verkauft(PId1, Jah1, Pre1, _), Jah1=2012, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
+	   (verkauft(PId2, Jah2, Pre2, _), Jah2=2011, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Pre1<Pre2.
+	PId1 = 12345,
+	Jah1 = 2012,
+	Pre1 = 24,
+	PId2 = 12347,
+	Jah2 = 2011,
+	Pre2 = 39 ;
+	PId1 = 12345,
+	Jah1 = 2012,
+	Pre1 = 24,
+	PId2 = 12348,
+	Jah2 = 2011,
+	Pre2 = 39 ;
 	false.
 
-  4.)   ?- (verkauft(PId1, Jah1, _, Ver1), Jah=2013, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)), 
-	   (verkauft(PId2, Jah2, _, Ver2), Jah=2012, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Ver1>Ver2.
-	false. --> Ergebnis noch Falsch.
+  4.)   ?- (verkauft(PId1, Jah1, _, Ver1), Jah1=2013, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
+	   		(verkauft(PId2, Jah2, _, Ver2), Jah2=2012, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Ver1>Ver2.
+	Jah1 = 2013,
+	Ver1 = 350,
+	Jah2 = 2012,
+	Ver2 = 270 ;
+	PId1 = 12345,
+	Jah1 = 2013,
+	Ver1 = 350,
+	PId2 = 12347,
+	Jah2 = 2012,
+	Ver2 = 23 ;
+	PId1 = 12345,
+	Jah1 = 2013,
+	Ver1 = 350,
+	PId2 = 12348,
+	Jah2 = 2012,
+	Ver2 = 0 ;
+	PId1 = 12347,
+	Jah1 = 2013,
+	Ver1 = 11,
+	PId2 = 12348,
+	Jah2 = 2012,
+	Ver2 = 0 ;
+	false.
 
-  5.)	?- (
+  5.)	?- produkt(_, Kat, Tit, _, Ver1, Ers1, _),
+				 produkt(_, Kat, Tit, _, Ver2, Ers2, _),
+				 Kat=buch, Ver1\=Ver2, Ers1<Ers2.
+			false.
+
+  6.)	?- (produkt(_, Kat1, Tit, _, _, _, _), Kat1=buch), (produkt(_, Kat2, Tit, _, _, _, _), Kat2=hoerbuch).
+
+	--> ???
+
+	7.) ?- produkt(PId, _, Tit, _, _, _, Lag1), \+((produkt(_, _, _, _, _, _, Lag2), Lag2 > Lag1)).
+			PId = 12346,
+			Tit = hoffnung,
+			Lag1 = 319 ;
+			false.
+
+Notiz: Der Trace ist nicht mit angegeben, da dieser bei einige der Querys viel zu lang ist.
