@@ -63,13 +63,13 @@ Aufg. 1
 				  X: Mutter1
 				  Y: Mutter2
 				  Z: Vater
-				  
-				  
-				  
+
+
+
 Aufg 2
 ---------------
   1.)	?- produkt(PId, Kat, Tit, Aut, Ver, Ers, Lag), Lag=0.
-  
+
 	PId = 12348,
 	Kat = buch,
 	Tit = blutrache,
@@ -82,53 +82,47 @@ Aufg 2
   2.)   ?- produkt(PId, Kat, Tit, Aut, Vers, Ers, Lag), Kat=dvd, Lag>100.
 	false.
 
-  3.)	?- (verkauft(PId1, Jah1, Pre1, _), Jah1=2012, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
-	   (verkauft(PId2, Jah2, Pre2, _), Jah2=2011, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Pre1<Pre2.
-	   
-	PId1 = 12345,
-	Jah1 = 2012,
-	Pre1 = 24,
-	PId2 = 12347,
-	Jah2 = 2011,
-	Pre2 = 39 ;
-	
-	PId1 = 12345,
-	Jah1 = 2012,
-	Pre1 = 24,
-	PId2 = 12348,
-	Jah2 = 2011,
-	Pre2 = 39 ;
+  Die Anfrage trifft auf die Datenbank überhaupt nicht zu.
+  Zutreffend wäre diese Anfrage (gegenüber Aufgabe 2.1):
+  Von welchen Büchern sind noch mehr als 100 Stück im Lager?
+
+        ?- produkt(PId, Kat, Tit, Aut, Vers, Ers, Lag), Kat=buch, Lag>100.
+
+        PId = 12346,
+        Kat = buch,
+        Tit = hoffnung,
+        Aut = sand_molly,
+        Vers = kasper,
+        Ers = 2015,
+        Lag = 319 ;
+
+        PId = 12347,
+        Kat = buch,
+        Tit = winterzeit,
+        Aut = wolf_michael,
+        Vers = meister,
+        Ers = 2011,
+        Lag = 204 ;
+        false.
+
+  3.)	  ?- (verkauft(PId, Jah1, Pre1, _), Jah1=2012),
+	       (verkauft(PId, Jah2, Pre2, _), Jah2=2011),
+         (PId=12345; PId=12346; PId=12347; PId=12348; PId=12349),
+         Pre1<Pre2.
 	false.
 
-  4.)   ?- (verkauft(PId1, Jah1, _, Ver1), Jah1=2013, (PId1=12345; PId1=12346; PId1=12347; PId1=12348; PId1=12349)),
-	   		(verkauft(PId2, Jah2, _, Ver2), Jah2=2012, (PId2=12345; PId2=12346; PId2=12347; PId2=12348; PId2=12349)), Ver1>Ver2.
-	   		
-	Jah1 = 2013,
-	Ver1 = 350,
-	Jah2 = 2012,
-	Ver2 = 270 ;
-	
-	PId1 = 12345,
-	Jah1 = 2013,
-	Ver1 = 350,
-	PId2 = 12347,
-	Jah2 = 2012,
-	Ver2 = 23 ;
-	
-	PId1 = 12345,
-	Jah1 = 2013,
-	Ver1 = 350,
-	PId2 = 12348,
-	Jah2 = 2012,
-	Ver2 = 0 ;
-	
-	PId1 = 12347,
-	Jah1 = 2013,
-	Ver1 = 11,
-	PId2 = 12348,
-	Jah2 = 2012,
-	Ver2 = 0 ;
-	false.
+  4.)   ?- (verkauft(PId, Jah1, _, Ver1), Jah1=2013),
+	   		   (verkauft(PId, Jah2, _, Ver2), Jah2=2012),
+           (PId=12345; PId=12346; PId=12347; PId=12348; PId=12349),
+           Ver1>Ver2.
+
+        PId = 12345,
+        Jah1 = 2013,
+        Ver1 = 350,
+        Jah2 = 2012,
+        Ver2 = 270 ;
+
+        false.
 
   5.)	?- produkt(_, Kat, Tit, _, Ver1, Ers1, _),
 				 produkt(_, Kat, Tit, _, Ver2, Ers2, _),
@@ -141,22 +135,22 @@ Aufg 2
         |    produkt(_, Kat2, Tit, _, _, _, _),
         |    Kat2 = hoerbuch
         |    )).
-        
+
         Kat1 = buch,
         Tit = sonnenuntergang ;
-        
+
         Kat1 = buch,
         Tit = blutrache ;
         false.
 
   7.) ?- produkt(PId, _, Tit, _, _, _, Lag1), \+((produkt(_, _, _, _, _, _, Lag2), Lag2 > Lag1)).
-  
+
 			PId = 12346,
 			Tit = hoffnung,
 			Lag1 = 319 ;
 			false.
 
-Notiz: Der Trace ist nicht mit angegeben, da dieser bei einige der Querys viel zu lang ist.
+Notiz: Der Trace ist nicht mit angegeben, da dieser bei einigen der Querys viel zu lang ist.
 
 
 
@@ -165,9 +159,9 @@ Aufg. 3
 -------------
   1.)
         % Definition
-      
+
         ?- assert(
-        |    preiserhoehung(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,Lagerbestand,JahrVor,PreisVor,JahrNach,PreisNach) :- 
+        |    preiserhoehung(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,Lagerbestand,JahrVor,PreisVor,JahrNach,PreisNach) :-
         |    (
         |    produkt(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,Lagerbestand),
         |    verkauft(PId,JahrVor,PreisVor,_),
@@ -180,7 +174,7 @@ Aufg. 3
         % Testfall
 
         ?- preiserhoehung(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,Lagerbestand,Vorjahr,PreisVorjahr,Umsatzjahr,PreisUmsatzjahr).
-        
+
         PId = 12348,
         Kategorie = buch,
         Titel = blutrache,
@@ -191,7 +185,7 @@ Aufg. 3
         PreisVorjahr = 29,
         Umsatzjahr = 2008,
         PreisUmsatzjahr = 34 ;
-        
+
         PId = 12348,
         Kategorie = buch,
         Titel = blutrache,
@@ -207,9 +201,9 @@ Aufg. 3
 
   2.)
         % Definition
-      
+
         ?- assert(
-        |    angebotzumerstenmal(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,_) :- 
+        |    angebotzumerstenmal(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,_) :-
         |    (
         |    produkt(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,_),
         |    not((
@@ -223,10 +217,10 @@ Aufg. 3
         % Testfall
         % Ein Tupel fürs Buch "Winterzeit" wird in die Datenbank hinzugefügt,
         % sodass von dem Buch vier Auflagen in der Datenbank vorkommen.
-     
+
         ?- asserta(produkt(12344,buch,winterzeit,wolf_michael,meister,2016,21)).
         true.
-        
+
         ?- produkt(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,_),
         |    Titel == winterzeit.
 
@@ -236,21 +230,21 @@ Aufg. 3
         Autor = wolf_michael,
         Verlag = meister,
         Erscheinungsjahr = 2016 ;
-        
+
         PId = 12347,
         Kategorie = buch,
         Titel = winterzeit,
         Autor = wolf_michael,
         Verlag = meister,
         Erscheinungsjahr = 2011 ;
-        
+
         PId = 12349,
         Kategorie = buch,
         Titel = winterzeit,
         Autor = wolf_michael,
         Verlag = meister,
         Erscheinungsjahr = 2015 ;
-        
+
         PId = 34568,
         Kategorie = hoerbuch,
         Titel = winterzeit,
@@ -260,21 +254,21 @@ Aufg. 3
 
         ?- angebotzumerstenmal(PId,Kategorie,Titel,Autor,Verlag,Erscheinungsjahr,_),
         |    Titel == winterzeit.
-        
+
         PId = 12347,
         Kategorie = buch,
         Autor = wolf_michael,
         Verlag = meister,
         Erscheinungsjahr = 2011 ;
         false.
-                
+
   3.)
         % Die Aufgabestellung ist mir nicht klar.
         % Ich gehe davon aus, dass man ein "aktuelles" Jahr als Argument eingeben muss.
         % Nur Produkte, die im "letzten" Jahr, also im Vorjahr des "aktuellen" Jahres erschienen sind, werden ermittelt.
-        
+
         % Definition
-        
+
         ?- assert(
         |    ladenhueter(DiesesJahr,PId,Kategorie,Titel,Autor,Verlag,Lagerbestand,Erscheinungsjahr,VerkaufteExemplare,Preis) :-
         |    (
@@ -287,7 +281,7 @@ Aufg. 3
         true.
 
         % Testfälle
-        
+
         ?- ladenhueter(2018,PId,Kategorie,Titel,Autor,Verlag,Lagerbestand,Erscheinungsjahr,VerkaufteExemplare,Preis).
         false.
 
@@ -327,36 +321,35 @@ Aufg. 4
 -------------
   1)
         Gemeinsamkeiten:
-           
-            In der Prolog-Syntax werden Fakt, Regel und Anfrage alle als Klausel angesehen. Zudem haben Sie den gleichen Baustein, nämlich Struktur, die folgendermaßen definiert ist:       
+
+            In der Prolog-Syntax werden Fakt, Regel und Anfrage alle als Klausel angesehen. Zudem haben Sie den gleichen Baustein, nämlich Struktur, die folgendermaßen definiert ist:
                 Struktur ::= Name['('Term{','Term}')']
                     Term ::= Konstante | Variable | Struktur | Liste
-        
+
         Unterschiede:
-        
-            Ein Fakt enthält genau eine Struktur, in der alle Terme Konstanten sind, z.B. 
+
+            Ein Fakt enthält genau eine Struktur, in der alle Terme Konstanten sind, z.B.
                 obj(1,efh,gaertnerstr,15,1965).
-                
+
             Eine Anfrage ist ein Ziel, das folgendermaßen definiert ist:
                             Ziel ::= elementares_Ziel | komplexes_Ziel
                 elementares_Ziel ::= Struktur
                   komplexes_Ziel ::= elementares_Ziel (',' | ';') Ziel
             Die Argumente in einer Anfrage können Konstanten oder Variablen sein, z.B.
                 obj(1,efh,gaertnerstr,15,Jahr).
-            
+
             Eine Regel besteht aus einem Kopf und einem Körper:
                  Regel ::= Kopf ':-' Körper
                   Kopf ::= Struktur
                 Körper ::= Ziel
             Regeln werden zweck deduktiver Datenbanken verwendet, z.B.
                 liebt(paul,X) :- liebt(X,buch).
-            
-            Nicht nur in der Syntax, sondern auch in der Semantik unterscheiden sich die drei Begriffe. Ein Fakt spezifiziert ein Element einer Relation. Die Anfrage erfordert die Antwort auf die Frage, ob das Ziel (eine logische Aussage) aus der Datenbasis folgt. Den Regeln liegt die logische Ableitbarkeit mit modus ponens zugrunde. 
+
+            Nicht nur in der Syntax, sondern auch in der Semantik unterscheiden sich die drei Begriffe. Ein Fakt spezifiziert ein Element einer Relation. Die Anfrage erfordert die Antwort auf die Frage, ob das Ziel (eine logische Aussage) aus der Datenbasis folgt. Den Regeln liegt die logische Ableitbarkeit mit modus ponens zugrunde.
 
   2)
         Eine Anfrage löst einen Suchprozess, also ein systematisches Durchmustern von Entscheidungsalternativen als Antwort(en) auf die Anfrage. Die Alternativen folgen aus den gegebenen Fakten und Regeln.
-        
+
         In der Logikprogrammierung erhält eine Variable ihren Wert durch Unifikation. Diese Bindung kann nur durch Backtracking wieder aufgelöst werden. Ein Wertmanipulation wie in der imperativen Programmierung ist völlig ausgeschlossen. Beim letzteren entspricht eine Variable ziemlich genau einem (konkreten) Speicherplatz im Hardwarespeicher, dessen Inhalt beliebig verändert werden kann.
-        
+
         Instanziierung ist Variablenbindung, wobei einer Variable ein Wert eindeutig zugeordnet wird.
-        
