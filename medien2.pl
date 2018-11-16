@@ -2,6 +2,19 @@
 :- dynamic kategorie/3.        % ermoeglicht dynamische Veraenderung
 %:- multifile kategorie/3.      % ermoeglicht verteilte Definition in mehreren Files
 
+% Berechnet die Anzahl der Produkte einer Kategorie
+anzahl_produkte(KatName, Anz) :- findall(Produkt,
+                                         (kategorie(KatID, KatName, _),
+                                          produkt(_, KatID, _, _, _, _, _)),
+                                         L),
+                                 length(L, Anz).
+
+verkaufte_exemplare(KatName, Anz) :- findall(Verkauft,
+                                             (kategorie(KatID, KatName, _),
+                                              produkt(PID, KatID, _, _, _, _, _),
+                                              verkauft(PID, _, _, Verkauft)),
+                                             L).
+
 % kategorie(Id_Unterkategorie,Name_Unterkategorie,Id_Oberkategorie)
 kategorie(1,buch,0).
 kategorie(2,ebuch,0).
@@ -98,5 +111,3 @@ verkauft(34567,2017,21,39).
 verkauft(34567,2018,21,45).
 verkauft(34568,2017,3,23).
 verkauft(34568,2018,3,2).
-
-
