@@ -10,14 +10,19 @@ anzahl_produkte(KatName, Anz) :- findall(Produkt,
                                          L),
                                  length(L, Anz).
 
+/*========= A1.2 */
 % Bisher verkaufte Exemplare einer Kategorie.
-verkaufte_exemplare(KatName, Anz) :- findall(Verkauft,
+verkaufte_exemplare(KatName, Insgesamt_Verkauft) :- findall(Verkauft,
                                              (kategorie(KatID, KatName, _),
                                               produkt(PID, KatID, _, _, _, _, _),
                                               verkauft(PID, _, _, Verkauft)),
-                                             L).
-                                             % --> not working yet
+                                             L),
+                                   sumlist(L, Insgesamt_Verkauft).
 
+/*========= A1.3*/
 % Berechnet für ein gegebenes Jahr wie stark die Verkaufserlöse durch die
 % Preisnachlässe gegenüber dem vorgegangenem Jahr geschmälert wurden.
 schmaelerung(Jahr) :-
+
+
+/*========= A2.1 */
