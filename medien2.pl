@@ -9,11 +9,13 @@ anzahl_produkte(KatName, Anz) :- findall(Produkt,
                                          L),
                                  length(L, Anz).
 
-verkaufte_exemplare(KatName, Anz) :- findall(Verkauft,
+% Bisher verkaufte Exemplare einer Kategorie
+verkaufte_exemplare(KatName, Insgesamt_Verkauft) :- findall(Verkauft,
                                              (kategorie(KatID, KatName, _),
                                               produkt(PID, KatID, _, _, _, _, _),
                                               verkauft(PID, _, _, Verkauft)),
-                                             L).
+                                             L),
+                                   sumlist(L, Insgesamt_Verkauft).
 
 % kategorie(Id_Unterkategorie,Name_Unterkategorie,Id_Oberkategorie)
 kategorie(1,buch,0).
