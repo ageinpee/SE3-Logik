@@ -3,19 +3,19 @@
 %:- multifile kategorie/3.      % ermoeglicht verteilte Definition in mehreren Files
 
 % Berechnet die Anzahl der Produkte einer Kategorie
-anzahl_produkte(KatName, Anz) :- findall(_,
-                                         (kategorie(KatID, KatName, _),
-                                          produkt(_, KatID, _, _, _, _, _)),
-                                         L),
-                                 length(L, Anz).
+% anzahl_produkte(KatName, Anz) :- findall(_,
+%                                          (kategorie(KatID, KatName, _),
+%                                           produkt(_, KatID, _, _, _, _, _)),
+%                                          L),
+%                                  length(L, Anz).
 
-% Bisher verkaufte Exemplare einer Kategorie
-verkaufte_exemplare(KatName, Insgesamt_Verkauft) :- findall(Verkauft,
-                                             (kategorie(KatID, KatName, _),
-                                              produkt(PID, KatID, _, _, _, _, _),
-                                              verkauft(PID, _, _, Verkauft)),
-                                             L),
-                                   sumlist(L, Insgesamt_Verkauft).
+% % Bisher verkaufte Exemplare einer Kategorie
+% verkaufte_exemplare(KatName, Insgesamt_Verkauft) :- findall(Verkauft,
+%                                              (kategorie(KatID, KatName, _),
+%                                               produkt(PID, KatID, _, _, _, _, _),
+%                                               verkauft(PID, _, _, Verkauft)),
+%                                              L),
+%                                    sumlist(L, Insgesamt_Verkauft).
 
 % kategorie(Id_Unterkategorie,Name_Unterkategorie,Id_Oberkategorie)
 kategorie(1,buch,0).
