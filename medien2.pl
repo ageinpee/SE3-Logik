@@ -3,7 +3,7 @@
 %:- multifile kategorie/3.      % ermoeglicht verteilte Definition in mehreren Files
 
 % Berechnet die Anzahl der Produkte einer Kategorie
-anzahl_produkte(KatName, Anz) :- findall(Produkt,
+anzahl_produkte(KatName, Anz) :- findall(_,
                                          (kategorie(KatID, KatName, _),
                                           produkt(_, KatID, _, _, _, _, _)),
                                          L),
