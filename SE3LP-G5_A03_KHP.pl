@@ -112,7 +112,7 @@ true.
 % Bedingung: keine Doppelergebnisse
 % Rückgabe liste der ProduktIDs
 
-% produkte_kategorie_nicht_vorhanden(-Liste)
+% produkte_kategorie_nicht_vorhanden(?Liste)
 
 produkte_kategorie_nicht_vorhanden(Liste) :- 
     findall(PID, 
@@ -123,6 +123,14 @@ produkte_kategorie_nicht_vorhanden(Liste) :-
 %% produkte_kategorie_nicht_vorhanden(-Liste)
 ?- produkte_kategorie_nicht_vorhanden(Liste).
 Liste = [99999].
+
+%% produkte_kategorie_nicht_vorhanden(+Liste)
+?- produkte_kategorie_nicht_vorhanden([99999]).
+true.
+
+%% produkte_kategorie_nicht_vorhanden(+Liste)
+?- produkte_kategorie_nicht_vorhanden([100000]).
+false.
 */
 
 /*========= A2.3
@@ -130,7 +138,7 @@ Schlüssel und Namen aller Kategorien, die keine gültigen Oberkategorie
 zugeordnet sind.
 */
 
-%% kategorie_obere_kategorie_ungueltig(-Liste)
+%% kategorie_obere_kategorie_ungueltig(?Liste)
 
 kategorie_obere_kategorie_ungueltig(Liste) :- 
     findall([KID, Name], 
@@ -143,6 +151,18 @@ kategorie_obere_kategorie_ungueltig(Liste) :-
 %% kategorie_obere_kategorie_ungueltig(-Liste)
 ?- kategorie_obere_kategorie_ungueltig(Liste).
 Liste = [[9000, nicht_gueltige_oberkategorie]].
+
+%% kategorie_obere_kategorie_ungueltig(+Liste)
+?- kategorie_obere_kategorie_ungueltig([[9000, nicht_gueltige_oberkategorie]]).
+true.
+
+%% kategorie_obere_kategorie_ungueltig(+Liste)
+?- kategorie_obere_kategorie_ungueltig([9000, nicht_gueltige_oberkategorie]).
+false.
+
+%% kategorie_obere_kategorie_ungueltig(+Liste)
+?- kategorie_obere_kategorie_ungueltig([]).
+false.
 */
 
 /*========= A2.4
@@ -153,21 +173,33 @@ für die diese Bedingung verletzt ist.
 => gibt Kategorien(ID) aus, für die dieses zutrifft.
 */
 
-%% mehrere_oberkategorien(-L)
+%% mehrere_oberkategorien(?L)
 
-mehrere_oberkategorien(L) :- 
-    findall(KatID, 
-            (kategorie(KatID, _,OID), 
-             findall(OID, 
-                     kategorie(OID,_,_), 
-                     Sub_Liste),
-             length(Sub_Liste, Laenge),
-             Laenge > 1),
-            L).
+mehrere_oberkategorien(L) :-
+    findall(KatID,
+    		(kategorie(KatID,_,_),
+		     findall(KatID,
+            		 (kategorie(KatID,_,OID1),
+           			  kategorie(KatID,_,OID2),
+          		      OID1 = OID2),
+        		     Sub_Liste),
+			 length(Sub_Liste, Laenge),
+    		 Laenge > 1),
+            L1),
+    sort(L1,L).
+
 /*
 %% mehrere_oberkategorien(-L)
 ?- mehrere_oberkategorien(L).
-L = [9000].
+L = [8999].
+
+%% mehrere_oberkategorien(+L)
+?- mehrere_oberkategorien([8999]).
+true.
+
+%% mehrere_oberkategorien(+L)
+?- mehrere_oberkategorien([9888]).
+true.
 */
 
 /*========= A3.1
