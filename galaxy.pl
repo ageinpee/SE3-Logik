@@ -1,4 +1,3 @@
-
 % endprodukt(Produkt)
 % Produkt ist der Name eines fertiggestellten Endproduktes
 endprodukt(galaxy2001).
@@ -51,4 +50,3 @@ arbeitsschritt(k_squeezer,2,montage2,galaxy2003).
 arbeitsschritt(box0817,1,montage3,galaxy2004).
 arbeitsschritt(k_squeezer,2,montage3,galaxy2004).
 arbeitsschritt(hyper_squeezer,4,montage3,galaxy2004).
-
