@@ -9,7 +9,7 @@
 
 /*========= A1*/
 %%______________________________________________________________________
-%%| Eigenschaft     | symmetrisch | refelexiv | transitiv | funktional |
+%%| Relation        | symmetrisch | refelexiv | transitiv | funktional |
 %%|=================|=============|===========|===========|============|
 %%| 1) A ist das    |             |           |           |            |
 %%| Geburtsdatum    |             |           |           |     X      |
@@ -26,7 +26,7 @@
 %%|-----------------|-------------|-----------|-----------|------------|
 %%| 4) A und B      |             |           |           |            |
 %%| spielen eine    |             |           |           |            |
-%%| Rolle im        |      X      |     X     |           |            |
+%%| Rolle im        |      X      |     X     |     X     |            |
 %%| gleichen Film   |             |           |           |            |
 %%|-----------------|-------------|-----------|-----------|------------|
 %%| 5) A ist        |             |           |           |            |
@@ -41,7 +41,40 @@
 %%      ist auch Reflexivität nich tmöglich. Dann würde A ein Geburts-
 %%      datum von A sein, was auch keinen Sinn macht. Transitivität ist
 %%      ebenfalls aus dem selben Grund nicht möglich.
-%%      Funktionalität scheint sinnvoll
+%%      Funktionalität scheint sinnvoll, da jede Person B bloß ein
+%%      Geburtsdatum A haben kann.
+%% zu 2) Wenn A im Turnier gegen B antriit, tritt B auch gegen A an,
+%%      Das besagt schon die interne Logik eines solchen Wettkampfes,
+%%      woraus folgt, dass Symmetrie gegeben ist. Reflexivität und
+%%      Transitivität machen auch keinen Sinn. Man kann nicht gegen sich
+%%      selbst antreten. Und Transitivität würde nur in einem Wettkampf
+%%      gelten, in dem Jeder gegen Jeden einmal antriit, wie z.B. in der
+%%      Bundesliga. Bei einem Wettkampf wie dem DFB-Pokal ist die Trans-
+%%      itivität schon wieder verletzt. So lässt sich nicht pauschal
+%%      sagen, dass die Transitivität gilt. Auch die Funnktionalität ist
+%%      hier nicht erfüllt. Sowohl A als auch B können gegen viele
+%%      gleiche und verschiedene Gegner antreten.
+%% zu 3) Die Symmetrie gilt hier nur wenn A eine unechte Teilmege von B
+%%      ist. Denn nur dann ist auch B eine unechte Teilmenge von A,
+%%      sprich A=B. A ist ebenfalls eine unechte Teilmenge von sich
+%%      selbst, also gilt die Reflexivität. Auch die Transitivität gilt,
+%%      denn wenn A Teilmenge von B und B Teilmenge von C ist, dann muss
+%%      A auch Teilmenge von C sein. Funktionalität ist nicht erfüllt,
+%%      denn A kann Teilmenge von mehreren Übermengen sein.
+%% zu 4) Wenn A eine Rolle im gleichen Film wie B spielt, dann spielt
+%%      auch B eine Rolle im gleichen Film wie A. Daraus folgt die
+%%      Symmetrie. A spielt auch immer eine Rolle im gleichen Film wie
+%%      A, woraus die Reflexivität folgt. Transitivität gilt auch. Die
+%%      Argumentation ist dabei die gleiche wie bei 3). Funktionalität
+%%      gilt allerdings nicht. Sowohl denn A kann mit mehreren Personen
+%%      zusammen eine Rolle im gleichen Film spielen.
+%% zu 5) Kongruent bedeutet Deckungsgleich. Das bedeutet, wenn A
+%%      kongruent zu B ist, ist auch B kongruent zu A. Auch ist A immer
+%%      kongruent zu sich selbst. Wenn nun A kongruent zu B und B
+%%      kongruent zu C, dann ist auch A kongruent zu C. Damit sind
+%%      Symmetrie, Reflexivität und Transitivität schonmal erfüllt. Die
+%%      Funktionalität ist nicht erfüllt, das A zu mehr als einem B
+%%      kongruent sein kann.
 
 
 
@@ -100,3 +133,4 @@ maschinen_ausfall(Maschine, Endprodukte) :- findall(Endprodukt2,
 ?- maschinen_ausfall(montage2, L).
 L = [galaxy2003].
 */
+
