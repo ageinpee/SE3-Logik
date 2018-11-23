@@ -138,8 +138,13 @@ L = [galaxy2003].
 das fur jedes ¨
 gegebene Paar aus Zulieferteil und Endprodukt die Fertigungstiefe berechnet.
 */
-fertigungstiefe(Produkt1, Produkt2, Tiefe) :- arbeitsschritt(Produkt1, _, _, Produkt2), Tiefe = 1.
-fertigungstiefe(Produkt1, Produkt2, Tiefe) :- arbeitsschritt(Produkt1, _, _, Zwischenprodukt), 
-                                              fertigungstiefe(Zwischenprodukt, Produkt2, Tiefe),
-                                              Tiefe is Tiefe + 1.
+fertigungstiefe(Produkt1, Produkt2, Tiefe) :- fertigungstiefe(Produkt1, Produkt2, 0, Tiefe).
+fertigungstiefe(Produkt1, Produkt2, Acc, Tiefe) :- arbeitsschritt(Produkt1, _, _, Produkt2), Tiefe is Acc + 1.
+fertigungstiefe(Produkt1, Produkt2, Acc, Tiefe) :- arbeitsschritt(Produkt1, _, _, Zwischenprodukt),
+                                              Tiefe2 is Acc + 1,
+                                              fertigungstiefe(Zwischenprodukt, Produkt2, Tiefe2, Tiefe).
                                               
+/*
+?- fertigungstiefe(box0815,galaxy2004 ,T).
+T = 3.
+*/
