@@ -134,3 +134,12 @@ maschinen_ausfall(Maschine, Endprodukte) :- findall(Endprodukt2,
 L = [galaxy2003].
 */
 
+/*===== Aufgabe 3.4
+das fur jedes ¨
+gegebene Paar aus Zulieferteil und Endprodukt die Fertigungstiefe berechnet.
+*/
+fertigungstiefe(Produkt1, Produkt2, Tiefe) :- arbeitsschritt(Produkt1, _, _, Produkt2), Tiefe = 1.
+fertigungstiefe(Produkt1, Produkt2, Tiefe) :- arbeitsschritt(Produkt1, _, _, Zwischenprodukt), 
+                                              fertigungstiefe(Zwischenprodukt, Produkt2, Tiefe),
+                                              Tiefe is Tiefe + 1.
+                                              
