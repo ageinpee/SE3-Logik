@@ -325,10 +325,9 @@ unterkat([Name], OId) :-
     kategorie(UId, Name, OId),
     not(kategorie(_, _, UId)).
 
-unterkat(L, OId) :-
+unterkat([Name | L], OId) :-
     kategorie(UId, Name, OId),
-    unterkat(L1, UId),
-    append([Name], L1, L).
+    unterkat(L, UId).
     
 /*
 %%%% Vier Instanziierungsvarianten
