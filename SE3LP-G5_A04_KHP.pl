@@ -19,6 +19,7 @@ produkt(44568,21,winterzeit,wolf_michael,audio,2017,16).
 /* Aufgabe 1: Eigenschaften von Relationen */
 /*******************************************/
 /*******************************************/
+
 %%______________________________________________________________________
 %%| Relation        | symmetrisch | refelexiv | transitiv | funktional |
 %%|=================|=============|===========|===========|============|
@@ -632,44 +633,55 @@ false.
 /* Aufgabe 3: Deduktive Datenbanken (2) */
 /****************************************/
 /****************************************/
+
 /*====== Aufgabe 3.1
 das fur beliebige Beispieldatenbanken berechnet, ob Produkt1 Voraussetzung
 für die Fertigung von Produkt2 ist. Produkte seien beliebige Komponenten
 bzw. fertige Produkte.
 */
-voraussetzung(Produkt1,Produkt2) :- arbeitsschritt(Produkt1, _, _, Produkt2).
-voraussetzung(Produkt1,Produkt2) :- arbeitsschritt(Produkt1, _, _, Zwischenprodukt),
-                                    voraussetzung(Zwischenprodukt, Produkt2).
+voraussetzung(Produkt1,Produkt2) :- 
+    arbeitsschritt(Produkt1, _, _, Produkt2).
+
+voraussetzung(Produkt1,Produkt2) :- 
+    arbeitsschritt(Produkt1, _, _, Zwischenprodukt),
+    voraussetzung(Zwischenprodukt, Produkt2).
+
 /*
 ?- voraussetzung(box0815, box0817).
 true.
 */
 
 /*===== Aufgabe 3.2
-Definieren Sie ein zweistelliges Prädikat, das die betroffenen Endprodukte für
-ein beliebiges nichtlieferbares Teil berechnet.
+Definieren Sie ein zweistelliges Prädikat, das die betroffenen 
+Endprodukte für ein beliebiges nichtlieferbares Teil berechnet.
 */
-betroffene_produkte(Produkt, L) :- findall(P2, voraussetzung(Produkt, P2), L).
+betroffene_produkte(Produkt, L) :- 
+    findall(P2, 
+            (endprodukt(P2), voraussetzung(Produkt, P2)), 
+            L).
 /*
 ?- betroffene_produkte(box0815, L).
-L = [box0816, box0817, galaxy2001, galaxy2002, galaxy2003, galaxy2004].
+L = [galaxy2001, galaxy2002, galaxy2003, galaxy2004].
 */
 
 /*==== Aufgabe 3.3
-Definieren Sie ein zweistelliges Pr¨adikat, das eine Liste der von einem Maschinenausfall
-betroffenen Endprodukte berechnet.
+Definieren Sie ein zweistelliges Prädikat, das eine Liste der von 
+einem Maschinenausfall betroffenen Endprodukte berechnet.
 
-Erweitern Sie dazu zun¨achst das Pr¨adikat voraussetzung/2 aus Aufgabenteil
-1 zu einem dreistelligen Pr¨adikat, das uberpr ¨ uft, ob ein Produktionspfad ¨
-zwischen zwei Produkten auch dann noch existiert, wenn ein bestimmter Arbeitsplatz
-nicht mehr zur Verfugung steht. 
+Erweitern Sie dazu zunächst das Prädikat voraussetzung/2 aus Aufgabenteil
+1 zu einem dreistelligen Prädikat, das uberprüft, ob ein Produktionspfad
+zwischen zwei Produkten auch dann noch existiert, wenn ein bestimmter 
+Arbeitsplatz nicht mehr zur Verfügung steht. 
 */
 % Prüft, ob ein Pfad existiert, der Maschine nicht benutzt.
-other_path(Produkt1, Maschine, Produkt2) :- arbeitsschritt(Produkt1, _, Maschine2, Produkt2), 
-                                                Maschine2 \= Maschine.
-other_path(Produkt1, Maschine, Produkt2) :- arbeitsschritt(Produkt1, _, Maschine2, Zwischenprodukt),
-                                                Maschine \= Maschine2,
-                                                other_path(Zwischenprodukt, Maschine, Produkt2).
+other_path(Produkt1, Maschine, Produkt2) :- 
+    arbeitsschritt(Produkt1, _, Maschine2, Produkt2), 
+    Maschine2 \= Maschine.
+    
+other_path(Produkt1, Maschine, Produkt2) :- 
+    arbeitsschritt(Produkt1, _, Maschine2, Zwischenprodukt),
+    Maschine \= Maschine2,
+    other_path(Zwischenprodukt, Maschine, Produkt2).
 
 %Hilfsfunktion
 not_member(_, []) :- !.
@@ -677,24 +689,33 @@ not_member(X, [Head|Tail]) :- X \= Head,
                               not_member(X, Tail).
 
 %gibt nur endprodukte zurück.
-maschinen_ausfall(Maschine, Endprodukte) :- findall(Endprodukt2, 
-                                            (findall(Endprodukt,other_path(_, Maschine, Endprodukt), L), 
-                                              endprodukt(Endprodukt2), not_member(Endprodukt2, L)), 
-                                            Endprodukte).
+maschinen_ausfall(Maschine, Endprodukte) :- 
+    findall(Endprodukt2, 
+            (findall(Endprodukt,
+                     other_path(_, Maschine, Endprodukt), 
+                     L), 
+             endprodukt(Endprodukt2), 
+             not_member(Endprodukt2, L)), 
+            Endprodukte).
 /*
 ?- maschinen_ausfall(montage2, L).
 L = [galaxy2003].
 */
 
 /*===== Aufgabe 3.4
-das fur jedes ¨
-gegebene Paar aus Zulieferteil und Endprodukt die Fertigungstiefe berechnet.
+das fur jedes gegebene Paar aus Zulieferteil und Endprodukt 
+die Fertigungstiefe berechnet.
 */
-fertigungstiefe(Produkt1, Produkt2, Tiefe) :- fertigungstiefe(Produkt1, Produkt2, 0, Tiefe).
-fertigungstiefe(Produkt1, Produkt2, Acc, Tiefe) :- arbeitsschritt(Produkt1, _, _, Produkt2), Tiefe is Acc + 1.
-fertigungstiefe(Produkt1, Produkt2, Acc, Tiefe) :- arbeitsschritt(Produkt1, _, _, Zwischenprodukt),
-                                              Tiefe2 is Acc + 1,
-                                              fertigungstiefe(Zwischenprodukt, Produkt2, Tiefe2, Tiefe).
+fertigungstiefe(Produkt1, Produkt2, Tiefe) :- 
+    fertigungstiefe(Produkt1, Produkt2, 0, Tiefe).
+    
+fertigungstiefe(Produkt1, Produkt2, Acc, Tiefe) :- 
+    arbeitsschritt(Produkt1, _, _, Produkt2), Tiefe is Acc + 1.
+
+fertigungstiefe(Produkt1, Produkt2, Acc, Tiefe) :- 
+    arbeitsschritt(Produkt1, _, _, Zwischenprodukt),
+    Tiefe2 is Acc + 1,
+    fertigungstiefe(Zwischenprodukt, Produkt2, Tiefe2, Tiefe).
                                               
 /*
 ?- fertigungstiefe(box0815,galaxy2004 ,T).
