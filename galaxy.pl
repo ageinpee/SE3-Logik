@@ -1,3 +1,4 @@
+
 % endprodukt(Produkt)
 % Produkt ist der Name eines fertiggestellten Endproduktes
 endprodukt(galaxy2001).
@@ -5,8 +6,8 @@ endprodukt(galaxy2002).
 endprodukt(galaxy2003).
 endprodukt(galaxy2004).
 
-% zulieferung(Produkt)
-% Produkt ist der Name einer von einem Zulieferer bezogenen Koponente
+    % zulieferung(Produkt)
+    % Produkt ist der Name einer von einem Zulieferer bezogenen Koponente
 zulieferung(box0815).
 zulieferung(vxs999).
 zulieferung(wumme27).
@@ -18,7 +19,7 @@ zulieferung(abc1x1).
 % arbeitsschritt(Produkt1, Stueckzahl,Arbeitsplatz,Produkt2)
 % Produkt1 und Produkt2 sind die Namen von Geraetekomponenten
 % und Arbeitsplatz ist der Name eines Fertigungsschritts, so dass
-% die durch Stueckzahl angegebene Anzahl von Produkt1 im 
+% die durch Stueckzahl angegebene Anzahl von Produkt1 im
 % Fertigungsschritt Arbeitsplatz in Produkt2 transformiert wird
 arbeitsschritt(box0815,1,stanze,box0816).
 arbeitsschritt(box0816,5,vormontage,box0817).
