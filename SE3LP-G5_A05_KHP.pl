@@ -75,6 +75,50 @@ halbieren(s(Peano), Halbes, Rest) :- peano2int(Int, Peano),
 /*==== Aufgabe 3 =====*/
 /*====================*/
 
+/*===== Aufgabe 3.1
+ein dreistelliges
+Pr¨adikat, das fur ein gegebenes Zulieferteil und ein gegebenes End- ¨
+produkt die Fertigungstiefe auf einem Produktionsfad vom Zulieferteil zum
+Endprodukt ermittelt.
+*/
+fertigungstiefe(Produkt1,Produkt2,1) :- arbeitsschritt(Produkt1,_,_,Produkt2).
+fertigungstiefe(Produkt1,Produkt2,Tiefe) :- arbeitsschritt(Produkt1,_,_,Zwischenprodukt),
+                                          fertigungstiefe(Zwischenprodukt,Produkt2,Deep),
+                                          Tiefe is Deep+1.
+/*
+?- fertigungstiefe(box0815, box0817, T).
+T = 2.
+*/
+
+/*===== Aufgabe 3.2
+Definieren Sie ein dreistelliges Pr¨adikat, das fur ein gegebenes Endprodukt ¨
+die Anzahl der dafur ben ¨ ¨otigten Zulieferteile einer bestimmten Art berechnet.
+Ob ein Teil ein Zulieferteil ist, wird im Pr¨adikat zulieferung/1 spezifiziert.
+*/
+anzahl_zulieferteil(Endprodukt, Zulieferteil, Anzahl) :- zulieferung(Zulieferteil), endprodukt(Endprodukt),
+                                                          anzahl_zulieferteil_rek(Endprodukt, Zulieferteil, Anzahl).
+anzahl_zulieferteil_rek(Endprodukt, Zulieferteil, Anzahl) :- arbeitsschritt(Zulieferteil, Stueckzahl, _, Endprodukt), 
+                                                        Anzahl = Stueckzahl.
+anzahl_zulieferteil_rek(Endprodukt, Zulieferteil, Anzahl) :- arbeitsschritt(Zulieferteil, Stueckzahl2, _, Zwischenprodukt),
+                                                              anzahl_zulieferteil_rek(Endprodukt, Zwischenprodukt, Stueckzahl),
+                                                              Anzahl is Stueckzahl2 + Stueckzahl.
+/* anzahl_zulieferteil
+?- anzahl_zulieferteil(galaxy2004, box0815, Anzahl).
+Anzahl = 7 ;
+*/
+
+/*===== Aufgabe 3.3
+Definieren Sie ein Pr¨adikat, das fur eine gegebene Anzahl von Zulieferteilen ¨
+die Anzahl der maximal daraus noch zu fertigenden Endprodukte ermittelt.
+*/
+anzahl_endprodukte(Endprodukt, AnzahlE, Zulieferteil, AnzahlZ) :- anzahl_zulieferteil(Endprodukt, Zulieferteil, 
+                                                                                      Anzahl), 
+                                                                  AnzahlE is AnzahlZ / Anzahl.
+/*
+?- anzahl_endprodukte(galaxy2004, AnzhalE, box0815, 14).
+AnzhalE = 2.
+*/
+
 /*====================*/
 /*==== Aufgabe 4 =====*/
 /*====================*/
