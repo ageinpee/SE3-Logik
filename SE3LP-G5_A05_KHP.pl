@@ -71,6 +71,88 @@ halbieren(s(Peano), Halbes, Rest) :- peano2int(Int, Peano),
 /*==== Aufgabe 2 =====*/
 /*====================*/
 
+:- consult('systematik.pl').
+
+%% kategorien(?Art, ?Liste)
+kategorien(Art, [['reich',Art]]) :-
+    reich(Art).
+
+kategorien(Art, [[Kat,Art]|L]) :-
+    sub(Art,Kat,Oberkategorie),
+    kategorien(Oberkategorie, L).
+    
+/*
+%%%% Vier Instanziierungsvarianten
+
+%% kategorien(+Art, -Liste)
+?- kategorien(menschenfloh, Liste).
+Liste = [[art, menschenfloh], 
+         [gattung, pulex], 
+         [familie, pulicidae], 
+         [ordnung, floehe], 
+         [klasse, insekten], 
+         [stamm, gliederfuesser], 
+         [reich, vielzeller]].
+         
+%% kategorien(+Art, +Liste)
+?- kategorien(menschenfloh, [[art, menschenfloh], 
+                             [gattung, pulex], 
+                             [familie, pulicidae], 
+                             [ordnung, floehe], 
+                             [klasse, insekten], 
+                             [stamm, gliederfuesser], 
+                             [reich, vielzeller]]).
+true.
+
+?- kategorien(menschenfloh, [[art, menschenfloh], 
+                             [gattung, pulex], 
+                             [familie, pulicidae], 
+                             [ordnung, floehe], 
+                             [klasse, insekten], 
+                             [stamm, gliederfuesser], 
+                             [reich, viren]]). % kein Virus
+false.
+
+%% kategorien(-Art, +Liste)
+?- kategorien(Art, [[art, menschenfloh], 
+                    [gattung, pulex], 
+                    [familie, pulicidae], 
+                    [ordnung, floehe], 
+                    [klasse, insekten], 
+                    [stamm, gliederfuesser], 
+                    [reich, vielzeller]]).
+Art = menschenfloh.
+
+%% kategorien(-Art, -Liste)
+?- kategorien(Art, Liste).
+Art = vielzeller,
+Liste = [[reich, vielzeller]];
+Art = bakterien,
+Liste = [[reich, bakterien]];
+Art = viren,
+Liste = [[reich, viren]];
+Art = pflanzen,
+Liste = [[reich, pflanzen]];
+Art = pilze,
+Liste = [[reich, pilze]];
+Art = schwaemme,
+Liste = [[stamm, schwaemme], [reich, vielzeller]];
+Art = kalkschwaemme,
+Liste = [[klasse, kalkschwaemme], [stamm, schwaemme], 
+         [reich, vielzeller]];
+Art = gliederfuesser,
+Liste = [[stamm, gliederfuesser], [reich, vielzeller]];
+Art = insekten,
+Liste = [[klasse, insekten], [stamm, gliederfuesser], 
+         [reich, vielzeller]];
+Art = kaefer,
+Liste = [[ordnung, kaefer], [klasse, insekten], 
+         [stamm, gliederfuesser], [reich, vielzeller]];
+Art = schmetterlinge,
+Liste = [[ordnung, schmetterlinge], [klasse, insekten], 
+         [stamm, gliederfuesser], [reich, vielzeller]].
+*/
+
 /*====================*/
 /*==== Aufgabe 3 =====*/
 /*====================*/
