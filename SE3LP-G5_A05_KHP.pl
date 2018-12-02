@@ -23,6 +23,10 @@ peano2int(0,0).
 peano2int(s(Peano), Int):- peano2int(Peano,Acc),
                            Int is Acc +1.
 
+%% Beispiel:
+%% ?- peano2int(s(s(s(s(0)))), Int).
+%% Int = 4.
+
 /*-----Aufgabe 1.2----*/
 %%Definition der Peano-Greater-Equals-Funktion
 %%Die Funktion benutzt die Funktion aus Aufgabe 1.1 um die zwei
@@ -30,42 +34,105 @@ peano2int(s(Peano), Int):- peano2int(Peano,Acc),
 %%normal mittels >=.
 peanoGEQ(s(P1), s(P2)) :- peano2int(P1, N1),
                           peano2int(P2, N2),
-                          N1>=N1.
+                          N1>=N2.
+
+%% Beispiel 4 >= 2:
+%% peanoGEQ(s(s(s(s(0)))), s(s(0))).
+%% true.
+
+%% Beispiel 2 >= 4:
+%% ?- peanoGEQ(s(s(0)), s(s(s(s(0))))).
+%% false.
+
+%% Beispiel 2 >= 2:
+%% ?- peanoGEQ(s(s(0)), s(s(0))).
+%% true.
+
 
 /*-----Aufgabe 1.3----*/
-%%Hilfsfunktion für halbieren. Wandelt einen Integer in eine
-%%Peanozahl um.
-int2peano(0, 0).
-int2peano(Number, s(Peano)) :- Number > 0,
-                               Acc is Number-1,
-                               int2peano(Acc, Peano).
+%% Die Peanozahl Peano wird in einen Integer umgewandelt womit anschließend
+%% mittels der Prolog-eigenen divmod-Funktion die Hälfte und der Rest berechnet
+%% werden. Da die Form der Ausgabe nicht definiert wurde, ist die Ausgabe für
+%% Half und Remainder bei uns ein Integer.
+peanoDivMod(Peano, Half, Remainder) :- peano2int(Peano, Int),
+                                       divmod(Int, 2, Half, Remainder).
 
-%
-% divide M (the dividend) by N (the divisor),
-%yielding the quotient (Q) and remainder (R).
-integer_division( M , N , Q , R ) :- M > 0 ,
-                                     N > 0 ,
-                                     div_rem( M , N , 0 , Q , R ).
+%% Beispiel Peano = 3:
+%% ?- peanoDivMod(s(s(s(0))), Half, Remainder).
+%% Half = Remainder, Remainder = 1.
 
- %
- % internal worker predicate for integer division
- % requires dividend and divisor both to be unsigned (positive).
- %
- div_rem( M , N , Q , Q , M ) :-  % dividend M < divisor N? We're done.
-   M < N ,                        % - unify the accumulator with the quotient
-   .                              % - and unify the divisor with the remainder
- div_rem( M , N ,T , Q , R ) :-   % dividend M >= divisor N?
-   M >= N ,                       % - increment the accumulator T
-   T is T+1 ,                     % - decrement the divisor by N
-   M1 is M-N ,                    % - recurse down
-   div_rem( M1 , N , T1 , Q , R ) % - That's all.
-   .                              % Easy!
+%% Beispiel Peano = 5:
+%% ?- peanoDivMod(s(s(s(s(s(0))))), Half, Remainder).
+%% Half = 2,
+%% Remainder = 1.
 
+%% Beispiel Peano = 2:
+%% ?- peanoDivMod(s(s(0)), Half, Remainder).
+%% Half = 1,
+%% Remainder = 0.
 
-%%Die halbieren Funktion.
-halbieren(s(Peano), Halbes, Rest) :- peano2int(Int, Peano),
-                                     integer_division(Int, 2, Halbes, Rest).
+%% Kann unser Prädikat auch zum Verdoppeln einer Peanozahl verwendet werden?
+%% --> Jein. Mit einer Integer Eingabe beim Parameter Half ist es möglich das
+%%     doppelte, oder das doppelte +1, dieser Zahl als Peano zu berechnen.
+%%     Beispiel - 2 mit Rest 0:
+%%     ?- peanoDivMod(X, 2, 0).
+%%     X = s(s(s(s(0)))) .
+%%     Beispiel - 2 mit Rest 1:
+%%     ?- peanoDivMod(X, 2, 1).
+%%     X = s(s(s(s(s(0))))) .
 
+/*-----Aufgabe 1.4----*/
+%% max iteriert rekursiv über die Peanozahlen, bis eine von beiden
+%% 0 ergibt.
+peanoMax(0, X, X).
+peanoMax(X, 0, X).
+peanoMax(s(X), s(Y), s(Z)) :- peanoMax(X, Y, Z).
+
+%% Beispiel max(3, 1)
+%% ?- peanoMax(s(s(s(0))), s(0), X).
+%% X = s(s(s(0))) ;
+%% false.
+
+%% Beispiel max(1, 3)
+%% ?- peanoMax(s(0), s(s(s(0))), X).
+%% X = s(s(s(0))) ;
+%% false.
+
+/*-----Aufgabe 1.5----*/
+%% Hilfsprädiakte aus dem Skript. Berechnet die Bauernmultiplikation für Integer.
+rbm(F1, 1, F1).
+rbm(F1, F2, R) :- F2>1,
+                  odd(F2),
+                  F21 is F2-1,
+                  rbm(F1, F21, R1),
+                  R is R1+F1.
+rbm(F1, F2, R) :- F2>1,
+                  even(F2),
+                  F11 is F1*2,
+                  F21 is F2/2,
+                  rbm(F11, F21, R).
+
+%% Hilfsprädikate für die Hilfsprädikate aus dem Skript
+odd(X) :- 1 is X mod 2.
+even(X) :- X>0, 0 is X mod 2.
+
+%% Prädikat für die Peano-Bauernmultiplikation. Die Peanozahlen werden in
+%% Integer umgewandelt und anschließend mittels der aus dem Skript stammenden
+%% Hilfsprädikate verrechnet. Da die Form der Ausgabe hier nicht definier ist,
+%% wird diese als Integer ausgegeben.
+peanoRBM(Peano1, Peano2, Result) :- peano2int(Peano1, Int1),
+                                    peano2int(Peano2, Int2),
+                                    rbm(Int1, Int2, Result).
+%% Beispiel 2*3:
+%% peanoRBM(s(s(0)), s(s(s(0))), Result).
+%% Result = 6 .
+
+%% Können wir unser Prädikat auch für die Division verwenden?
+%% --> Ja. Das Beispiel zeigt eine Rechnung von 6/2. Die Ausgabe ist allerdings
+%%     kein Integer sondern eine Peanozahl.
+%% Beispiel 6/2:
+%% ?- peanoRBM(X, s(s(0)), 6).
+%% X = s(s(s(0))) .
 
 /*====================*/
 /*==== Aufgabe 2 =====*/
@@ -80,46 +147,46 @@ kategorien(Art, [['reich',Art]]) :-
 kategorien(Art, [[Kat,Art]|L]) :-
     sub(Art,Kat,Oberkategorie),
     kategorien(Oberkategorie, L).
-    
+
 /*
 %%%% Vier Instanziierungsvarianten
 
 %% kategorien(+Art, -Liste)
 ?- kategorien(menschenfloh, Liste).
-Liste = [[art, menschenfloh], 
-         [gattung, pulex], 
-         [familie, pulicidae], 
-         [ordnung, floehe], 
-         [klasse, insekten], 
-         [stamm, gliederfuesser], 
+Liste = [[art, menschenfloh],
+         [gattung, pulex],
+         [familie, pulicidae],
+         [ordnung, floehe],
+         [klasse, insekten],
+         [stamm, gliederfuesser],
          [reich, vielzeller]].
-         
+
 %% kategorien(+Art, +Liste)
-?- kategorien(menschenfloh, [[art, menschenfloh], 
-                             [gattung, pulex], 
-                             [familie, pulicidae], 
-                             [ordnung, floehe], 
-                             [klasse, insekten], 
-                             [stamm, gliederfuesser], 
+?- kategorien(menschenfloh, [[art, menschenfloh],
+                             [gattung, pulex],
+                             [familie, pulicidae],
+                             [ordnung, floehe],
+                             [klasse, insekten],
+                             [stamm, gliederfuesser],
                              [reich, vielzeller]]).
 true.
 
-?- kategorien(menschenfloh, [[art, menschenfloh], 
-                             [gattung, pulex], 
-                             [familie, pulicidae], 
-                             [ordnung, floehe], 
-                             [klasse, insekten], 
-                             [stamm, gliederfuesser], 
+?- kategorien(menschenfloh, [[art, menschenfloh],
+                             [gattung, pulex],
+                             [familie, pulicidae],
+                             [ordnung, floehe],
+                             [klasse, insekten],
+                             [stamm, gliederfuesser],
                              [reich, viren]]). % kein Virus
 false.
 
 %% kategorien(-Art, +Liste)
-?- kategorien(Art, [[art, menschenfloh], 
-                    [gattung, pulex], 
-                    [familie, pulicidae], 
-                    [ordnung, floehe], 
-                    [klasse, insekten], 
-                    [stamm, gliederfuesser], 
+?- kategorien(Art, [[art, menschenfloh],
+                    [gattung, pulex],
+                    [familie, pulicidae],
+                    [ordnung, floehe],
+                    [klasse, insekten],
+                    [stamm, gliederfuesser],
                     [reich, vielzeller]]).
 Art = menschenfloh.
 
@@ -138,18 +205,18 @@ Liste = [[reich, pilze]];
 Art = schwaemme,
 Liste = [[stamm, schwaemme], [reich, vielzeller]];
 Art = kalkschwaemme,
-Liste = [[klasse, kalkschwaemme], [stamm, schwaemme], 
+Liste = [[klasse, kalkschwaemme], [stamm, schwaemme],
          [reich, vielzeller]];
 Art = gliederfuesser,
 Liste = [[stamm, gliederfuesser], [reich, vielzeller]];
 Art = insekten,
-Liste = [[klasse, insekten], [stamm, gliederfuesser], 
+Liste = [[klasse, insekten], [stamm, gliederfuesser],
          [reich, vielzeller]];
 Art = kaefer,
-Liste = [[ordnung, kaefer], [klasse, insekten], 
+Liste = [[ordnung, kaefer], [klasse, insekten],
          [stamm, gliederfuesser], [reich, vielzeller]];
 Art = schmetterlinge,
-Liste = [[ordnung, schmetterlinge], [klasse, insekten], 
+Liste = [[ordnung, schmetterlinge], [klasse, insekten],
          [stamm, gliederfuesser], [reich, vielzeller]].
 */
 
@@ -179,7 +246,7 @@ Ob ein Teil ein Zulieferteil ist, wird im Pr¨adikat zulieferung/1 spezifiziert.
 */
 anzahl_zulieferteil(Endprodukt, Zulieferteil, Anzahl) :- zulieferung(Zulieferteil), endprodukt(Endprodukt),
                                                           anzahl_zulieferteil_rek(Endprodukt, Zulieferteil, Anzahl).
-anzahl_zulieferteil_rek(Endprodukt, Zulieferteil, Anzahl) :- arbeitsschritt(Zulieferteil, Stueckzahl, _, Endprodukt), 
+anzahl_zulieferteil_rek(Endprodukt, Zulieferteil, Anzahl) :- arbeitsschritt(Zulieferteil, Stueckzahl, _, Endprodukt),
                                                         Anzahl = Stueckzahl.
 anzahl_zulieferteil_rek(Endprodukt, Zulieferteil, Anzahl) :- arbeitsschritt(Zulieferteil, Stueckzahl2, _, Zwischenprodukt),
                                                               anzahl_zulieferteil_rek(Endprodukt, Zwischenprodukt, Stueckzahl),
@@ -193,8 +260,8 @@ Anzahl = 7 ;
 Definieren Sie ein Pr¨adikat, das fur eine gegebene Anzahl von Zulieferteilen ¨
 die Anzahl der maximal daraus noch zu fertigenden Endprodukte ermittelt.
 */
-anzahl_endprodukte(Endprodukt, AnzahlE, Zulieferteil, AnzahlZ) :- anzahl_zulieferteil(Endprodukt, Zulieferteil, 
-                                                                                      Anzahl), 
+anzahl_endprodukte(Endprodukt, AnzahlE, Zulieferteil, AnzahlZ) :- anzahl_zulieferteil(Endprodukt, Zulieferteil,
+                                                                                      Anzahl),
                                                                   AnzahlE is AnzahlZ / Anzahl.
 /*
 ?- anzahl_endprodukte(galaxy2004, AnzhalE, box0815, 14).
