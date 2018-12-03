@@ -271,3 +271,60 @@ AnzhalE = 2.
 /*====================*/
 /*==== Aufgabe 4 =====*/
 /*====================*/
+
+/*
+%%%% Gemeinsamkeiten und Unterschiede
+
+Bei den Prädikatsdefinitionen für die genannten Datenbasen weisen die
+intensional definierten Relationen Hierarchie und Transitivität auf.
+Die Relationen lassen sich also durch gerichtete Graphen darstellen.
+Ein Knoten steht in Relation zu allen Knoten, die sich im gleichen 
+Kantenzug befinden und hierarchisch tiefer sind.
+
+Andererseits unterscheiden sich die Relationen in den Besonderheiten
+der jeweiligen Datenbasen: Beim Besitzerwechsel im Immobilienhandel
+besteht der Graph aus Wegen, die nicht miteinander zusammenhängen; 
+jeder Weg zeigt den Besitzerwechsel eines Immobilienobjektes. Bei den
+Kategorien in der Mediendatenbank enthält der Graph kurze Bäume und 
+einzelne alleinstehende Knoten; es gibt nämlich Kategorien, die zwar
+mit aufgelistet sind, in denen jedoch kein Produkt vorhanden ist. Die
+Systematisch biologischer Arten ist ein zusammenhänender großer Baum.
+Bei der Familiendatenbank stellt die Vor-/Nachfahren-Beziehung auch 
+einen zusammenhängenden Baum dar. Bei der Produktionsplanung ähnelt
+die Relation einem Netzwerk mit Quell- und Zielknoten, wobei sich die
+Wege an Zwischenknoten kreuzen. Bei der Wegplanung ist die Relation
+auch ähnlich einem Netzwerk, jedoch nicht notwendigerweise mit 
+deutlichen Quell- und Zielknoten.
+
+
+
+%%%% Bedingungen für terminierungssichere Prädikatsaufrufe
+
+Da die Relationen hierarchisch und trasitiv sind, lassen sie durch 
+rekursive Prädikatsaufrufe ermitteln. Allerdings kann die Rekursion
+Terminierungsprobleme hervorrufen, wenn die transitive Relation 
+zugleich symmetrisch ist. (Um Redundanz zu vermeiden, sind extensional
+definierte zweistellige Relationen im Grund unsymmetrisch. Die
+Symmetrie wird durch intensionale Spezifikation hergestellt.)
+
+Ein Beispiel aus der Wegplanung: 
+con(Stadt1,Stadt2) :- con(Stadt1,Stadt2).
+
+Ein weiteres Beispiel aus der familiären Beziehung:
+geschwister_von(Person1,Person2) :- geschwister_von(Person2,Person1).
+
+Ein rekursive Prädikatsaufruf wird in endlose zyklische Schleife 
+geraten, weil die folgenden Bedingungen einer Rekursion nicht alle zu 
+erfüllen sind:
+
+% Jeder Rekusionsschritt sollte die Argumente an die Bedingung zum
+  Rekursionsabbruch näher bringen (z.B. ein Listenargument verkürzt).
+  
+% Die Abbruchbedingung muss so formuliert werden, dass die Iterationen
+  nicht über das Ziel hinaus weiter laufen.
+
+Bei den oben genannten Beispielen kommt ein rekursiver 
+Prädikatsaufruf zwar im Rekursionsschritt dem Ziel näher, schießt aber 
+wieder übers Ziel hinaus und läuft weiter. Somit geht die zyklische 
+Schleife nie zu Ende.
+*/
