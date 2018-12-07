@@ -87,3 +87,105 @@ goldener_schritt_endrek_rec(LastStep, Step, Acc, Result) :-
 
 %%
 %% 
+
+/*====================*/
+/*-----Aufgabe 2------*/
+/*====================*/
+
+/*====================*/
+/*-----Aufgabe 3------*/
+/*====================*/
+
+%===== Aufgabe 3.1
+% Definieren Sie einen Typtest fur derartige Strukturen.
+% s(a,b), s(s(a,b),c), s(a,s(b,c)),
+baum(Blatt) :- atom(Blatt).
+baum(s(A,B)) :- baum(A), baum(B).
+/*
+?- baum(s(a,c)).
+true.
+*/
+
+%===== Aufgabe 3.2
+% teifen ermittling
+% 1: nicht endrekursiv
+% 2: endrekursiv
+tiefe_baum_1(Blatt, 1):-
+	atom(Blatt).
+
+tiefe_baum_1(s(A, _), Tiefe):-
+	tiefe_baum_1(A, Temp),
+	Tiefe is Temp + 1.
+
+tiefe_baum_1(s(_, A), Tiefe):-
+	tiefe_baum_1(A, Temp),
+    Tiefe is Temp + 1.
+
+%helper, da ein akku benötigt wird.
+tiefe_baum_2(Baum, Tiefe):-
+	tiefe_baum_2_h(Baum, Tiefe, 1).
+
+tiefe_baum_2_h(A, Tiefe, Tiefe):-
+	atom(A).
+
+tiefe_baum_2_h(s(A, _), Tiefe, Akku):-
+	AkkuNeu is Akku + 1,
+	tiefe_baum_2_h(A, Tiefe, AkkuNeu).
+
+tiefe_baum_2_h(s(_, A), Tiefe, Akku):-
+	AkkuNeu is Akku + 1,
+	tiefe_baum_2_h(A, Tiefe, AkkuNeu).
+
+/*
+?- tiefe_baum_1(s(a,s(b,c)), T).
+T = 2 ;
+T = 3 ;
+T = 3.
+?- tiefe_baum_2(s(a,s(b,c)), T).
+T = 2 ;
+T = 3 ;
+T = 3.
+*/
+
+%=====Aufgabe 3.3
+%max tiefe
+max_tiefe(Baum, Tiefe):-
+	findall(Zweigtiefe,
+        tiefe_baum_2(Baum, Zweigtiefe),
+        %ListeT ist eine Liste von Tiefen
+		ListeT),
+	max_list(ListeT, Tiefe).
+
+/*
+?- max_tiefe(s(a,s(b,c)), T).
+T = 3.
+*/
+
+%======Aufgabe 3.4
+% max tiefe rekursive
+max_tiefe_r(Blattknoten, 1):-
+	atomic(Blattknoten).
+
+max_tiefe_r(s(A, B), Tiefe):-
+	max_tiefe_r(A, TiefeA),
+	max_tiefe_r(B, TiefeB),
+	Tiefe is max(TiefeA, TiefeB) + 1.
+
+/*
+?- max_tiefe_r(s(a,s(b,c)), T).
+T = 3.
+*/
+
+%======Aufgabe 3.5
+%Prüfe ob der Baum balanciert ist.
+balanciert(Baum):-
+	findall(Zweigtiefe,
+		tiefe_baum_2(Baum, Zweigtiefe),
+		ListT),
+	max_list(ListT, MaxTiefe),
+	min_list(ListT, MinTiefe),
+	MaxTiefe =< MinTiefe + 1.
+/*
+?- balanciert(s(a,s(b,c))).
+true.
+*/
