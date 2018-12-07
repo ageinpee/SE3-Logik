@@ -83,3 +83,7 @@ goldener_schritt_endrek_rec(LastStep, Step, Acc, Result) :-
 
 /*====================*/
 /*-----Aufgabe 1.3----*/
+
+
+%%
+%% 
