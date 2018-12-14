@@ -26,3 +26,21 @@ del_stop(Stops,[Word|Words],[R|Rs]):- del_stop(Stops, Words, Rs).
 /*==== Aufgabe 2 =====*/
 /*====================*/
 /*-----Aufgabe 2.1----*/
+
+%%occurance(_, [], []).
+%%occurance(Text, [Word|Words], R):- member(Word, Result),
+%%                                  !,
+%%                                  occurance(Text, Words, R).
+%%occurance(Text, [Word|Words], [R|Rs]):- count(Text, Word, Occ),
+%%                                        addElement([Word, Occ], R, R)
+%%                                        occurance(Text, Words, Rs).
+
+occurance(Text, Words, R):- sort(Words, Set),
+                            occurance_set(Text, Set, R).
+occurance_set(_, [], []).
+occurance_set(Text, [Word|Words], [R|Rs]):- count(Text, Word, Occ),
+                                            append([Word, Occ], R),
+                                            occurance_set(Text, Words, Rs).
+
+count(L, E, N) :-
+    include(=(E), L, L2), length(L2, N).
