@@ -156,6 +156,7 @@ false.
 
 %% wort_index(+Text,-Index)
 ?- text(6,Text),wort_index(T,I).
+
 I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3], 
 [in, 4], [bagdad, 5], [kurz, 6], [hintereinander, 7], [mindestens, 8], 
 [33, 9], [menschen, 10], [ums, 11], [leben, 12], [gekommen, 13], 
@@ -168,6 +169,7 @@ I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3],
 [attacke, 42], [auf, 43], [eine, 44], [polizeipatrouille, 45], 
 [im, 46], [stadtzentrum, 47], [vier, 48], [weiterer, 49], 
 [sprengsatz, 50], [detonierte, 51], [schnellrestaurant, 52]],
+
 T = [bei, drei, terroranschlägen, sind, in, bagdad, kurz, 
 hintereinander, mindestens, 33, menschen, ums, leben, gekommen, ('.'), 
 mehr, als, 50, iraker, wurden, verletzt, ('.'), ein, 
@@ -192,6 +194,7 @@ word2key(W,K,[_|R]) :- word2key(W,K,R). % Wortform nicht gefunden
 %% word2key(+Word,-Key,+Index)
 ?- text(6,T),wort_index(T,I),word2key(polizeipatrouille,K,I).
 K = 45,
+
 I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3], 
 [in, 4], [bagdad, 5], [kurz, 6], [hintereinander, 7], [mindestens, 8], 
 [33, 9], [menschen, 10], [ums, 11], [leben, 12], [gekommen, 13], 
@@ -204,6 +207,7 @@ I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3],
 [attacke, 42], [auf, 43], [eine, 44], [polizeipatrouille, 45], 
 [im, 46], [stadtzentrum, 47], [vier, 48], [weiterer, 49], 
 [sprengsatz, 50], [detonierte, 51], [schnellrestaurant, 52]],
+
 T = [bei, drei, terroranschlägen, sind, in, bagdad, kurz, 
 hintereinander, mindestens, 33, menschen, ums, leben, gekommen, ('.'), 
 mehr, als, 50, iraker, wurden, verletzt, ('.'), ein, 
@@ -234,6 +238,7 @@ false.
 %% word2key(-Word,+Key,+Index)
 ?- text(6,T),wort_index(T,I),word2key(W,28,I).
 W = polizei,
+
 I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3], 
 [in, 4], [bagdad, 5], [kurz, 6], [hintereinander, 7], [mindestens, 8], 
 [33, 9], [menschen, 10], [ums, 11], [leben, 12], [gekommen, 13], 
@@ -246,6 +251,7 @@ I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3],
 [attacke, 42], [auf, 43], [eine, 44], [polizeipatrouille, 45], 
 [im, 46], [stadtzentrum, 47], [vier, 48], [weiterer, 49], 
 [sprengsatz, 50], [detonierte, 51], [schnellrestaurant, 52]],
+
 T = [bei, drei, terroranschlägen, sind, in, bagdad, kurz, 
 hintereinander, mindestens, 33, menschen, ums, leben, gekommen, ('.'), 
 mehr, als, 50, iraker, wurden, verletzt, ('.'), ein, 
@@ -337,10 +343,12 @@ T = [null, null, null, null].
 
 %% words2keys(+Text,-ListOfKeys,+Index)
 ?- text(6,T),wort_index(T,I),words2keys(T,L,I).
+
 L = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
 19, 20, 14, 21, 22, 23, 24, 25, 26, 27, 28, 4, 29, 5, 30, 18, 31, 4, 
 32, 33, 14, 34, 35, 28, 36, 37, 38, 39, 0, 40, 41, 42, 43, 44, 45, 46, 
 47, 48, 10, 14, 21, 49, 50, 51, 4, 25, 52, 14],
+
 I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3], 
 [in, 4], [bagdad, 5], [kurz, 6], [hintereinander, 7], [mindestens, 8], 
 [33, 9], [menschen, 10], [ums, 11], [leben, 12], [gekommen, 13], 
@@ -353,6 +361,7 @@ I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3],
 [attacke, 42], [auf, 43], [eine, 44], [polizeipatrouille, 45], 
 [im, 46], [stadtzentrum, 47], [vier, 48], [weiterer, 49], 
 [sprengsatz, 50], [detonierte, 51], [schnellrestaurant, 52]],
+
 T = [bei, drei, terroranschlägen, sind, in, bagdad, kurz, 
 hintereinander, mindestens, 33, menschen, ums, leben, gekommen, ('.'), 
 mehr, als, 50, iraker, wurden, verletzt, ('.'), ein, 
@@ -371,7 +380,7 @@ false.
 /*-----Aufgabe 4.1----*/
 
 % [Vater, Sohn1, Sohn2]
-%   Eine Liste stellt einen (Teil)Baum dar.
+%   Eine Liste mit drei Elementen stellt einen (Teil)Baum dar.
 
 %   Vater repräsentiert die Wurzel des (Teil)Baums.
 %   Sohn1 und Sohn2 sind jeweils ein Teilbaum oder ein Blatt.
@@ -388,15 +397,15 @@ false.
 %%%% Prädikat
 %% intree(+Element,+BaumAlt,?BaumNeu)
 intree([E,N],[],[[E,N],[],[]]). % Abbruchbedingung, BaumAlt leer
-                                % Rückgabe Element mit zwei Blättern
+                                % Rückgabe: E mit zwei Blättern
 
 intree([E,N],[[W,K],VB,HB],[[W,K],VBN,HB]) :-
 	N=<K, intree([E,N],VB,VBN). % E.Schlüssel <= Wurzel.Schlüssel
-	                            % Einfügen in VB (vorderen Baum)
+	                            % Einfügen von E in VB (vorderen Baum)
 
 intree([E,N],[[W,K],VB,HB],[[W,K],VB,HBN]) :-
 	N>K, intree([E,N],HB,HBN).  % E.Schlüssel > Wurzel.Schlüssel
-	                            % Einfügen in HB (hinteren Baum)
+	                            % Einfügen von E in HB (hinteren Baum)
 
 /*
 %%%% Testfälle
@@ -492,11 +501,11 @@ words2keysT([],[],_).       % Abbruchbedingung, Text leer
 
 words2keysT([W|R],[K|L],I) :-
     word2keyT(W,K,I),       % Wortform im Indexbaum gefunden
-    words2keysT(R,L,I).     % Ersetzen mit dem Rest des Texts
+    words2keysT(R,L,I).     % Rekursion mit dem Rest des Texts
 
 words2keysT([W|R],L,I) :-
     not(word2keyT(W,_,I)),  % Wortform im Indexbaum nicht gefunden
-    words2keysT(R,L,I).     % Ersetzen mit dem Rest des Texts
+    words2keysT(R,L,I).     % Rekursion mit dem Rest des Texts
 
 /*
 %%%% Testfälle
@@ -613,20 +622,20 @@ split_index(_,N,_,N,[],[]). % Abbruchbedingung, IndexPosMax erreicht
 
 split_index(I,C,K,N,[E|VI],HI) :-
     C<K,            % IndexPosition C < TrennPosition K
-    nth0(C,I,E),    % E für Index-Element an der IndexPosition
-    C1 is C+1,      % C1 für die neue TrennPosition (um 1 erhöht)
-    split_index(I,C1,K,N,VI,HI). % Weitere Trennung mit C1 
+    nth0(C,I,E),    % E fürs Element an der IndexPosition C
+    C1 is C+1,      % C1 für die neue IndexPosition (um 1 erhöht)
+    split_index(I,C1,K,N,VI,HI). % Weitere Zuteilung mit Element an C1 
 
 split_index(I,C,K,N,VI,HI) :-
     C=K,            % IndexPosition C == TrennPosition K
-    C1 is C+1,      % C1 für die neue TrennPosition (um 1 erhöht)
-    split_index(I,C1,K,N,VI,HI). % Weitere Trennung mit C1
+    C1 is C+1,      % C1 für die neue IndexPosition (um 1 erhöht)
+    split_index(I,C1,K,N,VI,HI). % Weitere Zuteilung mit Element an C1
 
 split_index(I,C,K,N,VI,[E|HI]) :-
     C>K,            % IndexPosition C > TrennPosition K
     nth0(C,I,E),    % E für Index-Element an der IndexPosition
-    C1 is C+1,      % C1 für die neue TrennPosition (um 1 erhöht)
-    split_index(I,C1,K,N,VI,HI). % Weitere Trennung mit C1
+    C1 is C+1,      % C1 für die neue IndexPosition (um 1 erhöht)
+    split_index(I,C1,K,N,VI,HI). % Weitere Zuteilung mit Element an C1
 
 /*
 %%%% Testfälle
@@ -667,6 +676,7 @@ false.
 
 %% index2tree(+Index,-Baum)
 ?- text(6,T),wort_index(T,I),index2tree(I,B).
+
 B = [[rekrutierungsbüro, 26], 
      [[gekommen, 13], 
       [[kurz, 6], 
@@ -698,6 +708,7 @@ B = [[rekrutierungsbüro, 26],
        [[sprengsatz, 50], 
         [[weiterer, 49], [[vier, 48], [], []], []], 
         [[schnellrestaurant, 52], [[detonierte, 51], [], []], []]]]]],
+
 I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3], 
 [in, 4], [bagdad, 5], [kurz, 6], [hintereinander, 7], [mindestens, 8], 
 [33, 9], [menschen, 10], [ums, 11], [leben, 12], [gekommen, 13], 
@@ -710,6 +721,7 @@ I = [[bei, 0], [drei, 1], [terroranschlägen, 2], [sind, 3],
 [attacke, 42], [auf, 43], [eine, 44], [polizeipatrouille, 45], 
 [im, 46], [stadtzentrum, 47], [vier, 48], [weiterer, 49], 
 [sprengsatz, 50], [detonierte, 51], [schnellrestaurant, 52]],
+
 T = [bei, drei, terroranschlägen, sind, in, bagdad, kurz, 
 hintereinander, mindestens, 33, menschen, ums, leben, gekommen, ('.'), 
 mehr, als, 50, iraker, wurden, verletzt, ('.'), ein, 
