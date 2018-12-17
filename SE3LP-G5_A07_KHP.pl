@@ -2,49 +2,127 @@
   Namen: Chung-Shan Kao, Harm Matthias Harms, Henrik Peters
 */
 consult('texte.pl').
-consult('texte_latin1.pl').
 
 /*====================*/
 /*==== Aufgabe 1 =====*/
+/*
+del_stop/4 checkt mittels member/2 und number/1, ob ein Wort in der 
+Stoppwortliste oder eine Zahl ist. Wenn ja, dann geht es mit dem 
+nächsten Wort rekursiv weiter. Wenn nicht, wird das Wort zu dem neuen 
+Text hinzugefügt und dann rekursiv weiter gerechnet. Die Rekursion 
+wird abgebrochen, wenn der alte Text leer ist.
+*/
 
-%% del_stop startet und checkt mittels member ob ein Wort in der Stopliste ist.
-%% Wenn ja wird dann mittels ! das Backtracing abgebrochen und es geht mit dem
-%% nächsten Wort weiter. Wenn nicht wird rekursiv weiter gerechnet. Die Rekursion
-%% wird abgebrochen wenn beide Listen leer sind.
-del_stop(_,[],[]).
-del_stop(Stops,[Word|Words],R):- member(Word, Stops),
-                                 !,
-                                 del_stop(Stops, Words, R).
-de_stop(Stops,[Word|Words],[R|Rs]):- del_stop(Stops, Words, Rs).
+%%%% Prädikat
+%% del_stop(+Stops,+TextOld,?TextNew)
+del_stop(Stops,TextOld,TextNew) :-
+    del_stop(Stops,TextOld,[],TextNew). % Acc von [] an
 
-%% Beispiel:
-%% ?- stop(S), text(1, T), del_stop(S, T, R).
-%% S = [der, die, das, den, dem, des, diese, dieser, diesem|...],
-%% T = [nachdem, er, eine, feuerwerksrakete, von, seinem, hintern, aus, gezündet|...],
-%% R = [_5390, _5396, _5402, _5408, _5414, _5420, _5426, _5432, _5438|...]
+del_stop(_,[],Acc,TextNew) :-
+    reverse(Acc,TextNew). % Abbruchbedingung, TextNew == Acc umdrehen
+
+del_stop(Stops,[Word|Words],Acc,TextNew) :-
+    not(member(Word,Stops)),                  % Word kein Stoppwort
+    not(number(Word)),                        % Word keine Zahl
+    del_stop(Stops,Words,[Word|Acc],TextNew). % Word in Acc einfügen
+
+del_stop(Stops,[Word|Words],Acc,TextNew) :-
+    member(Word,Stops),                % Word ein Stoppwort
+    del_stop(Stops,Words,Acc,TextNew). % Word nicht in Acc einfügen
+
+del_stop(Stops,[Word|Words],Acc,TextNew) :-
+    number(Word),                      % Word eine Zahl
+    del_stop(Stops,Words,Acc,TextNew). % Word nicht in Acc einfügen
+
+/*
+%%%% Testfall
+%% del_stop(+Stops,+TextOld,-TextNew)
+?- stop(Stops),text(6,TextOld),del_stop(Stops,TextOld,TextNew).
+
+Stops = [der, die, das, den, dem, des, diese, dieser, diesem, deren, 
+ein, eine, eines, einer, einen, einem, eines, kein, keine, keinen, 
+keinem, keines, keiner, ist, sind, sei, war, waren, haben, habe, hat, 
+hatte, hatten, will, wollen, wollte, wollten, werden, wird, wurde, 
+wurden, worden, machen, macht, mache, können, könnte, könnten, soll, 
+sollen, sollte, müssten, müsste, müsse, und, oder, da, weil, er, sie, 
+es, sich, sein, seine, seinen, seinem, seiner, ihr, ihre, ihrer, 
+ihren, ihrem, ihres, weiter, weiteren, weitere, weiterer, weiteres, 
+einige, einigen, mehreren, mehrere, andere, anderen, ob, dass, obwohl, 
+am, an, auf, aus, bei, beim, bis, durch, für, gegen, im, in, ins, mit, 
+nahe, nach, seit, trotz, über, ums, unter, vom, von, vor, wegen, zu, 
+zum, zur, oft, auch, so, nur, noch, wieder, erst, sehr, dafür, zurück, 
+einander, mehr, als, nicht, wie, wann, wo, dann, mal, vorbei, null, 
+eins, zwei, drei, vier, fünf, sechs, sieben, acht, neun, zehn, elf, 
+zwölf, ('.'), (',')],
+
+TextNew = [terroranschlägen, bagdad, kurz, hintereinander, mindestens, 
+menschen, leben, gekommen, iraker, verletzt, selbstmordattentäter, 
+riss, rekrutierungsbüro, polizei, west, bagdad, iraker, tod, polizei, 
+mitteilte, starben, attacke, polizeipatrouille, stadtzentrum, 
+menschen, sprengsatz, detonierte, schnellrestaurant],
+
+TextOld = [bei, drei, terroranschlägen, sind, in, bagdad, kurz, 
+hintereinander, mindestens, 33, menschen, ums, leben, gekommen, ('.'), 
+mehr, als, 50, iraker, wurden, verletzt, ('.'), ein, 
+selbstmordattentäter, riss, vor, einem, rekrutierungsbüro, der, 
+polizei, in, west, bagdad, 28, iraker, mit, in, den, tod, ('.'), wie, 
+die, polizei, weiter, mitteilte, (','), starben, bei, einer, weiteren, 
+attacke, auf, eine, polizeipatrouille, im, stadtzentrum, vier, 
+menschen, ('.'), ein, weiterer, sprengsatz, detonierte, in, einem, 
+schnellrestaurant, ('.')];
+false.
+*/
 
 /*====================*/
 /*==== Aufgabe 2 =====*/
 /*====================*/
-/*-----Aufgabe 2.1----*/
 
-%%occurance(_, [], []).
-%%occurance(Text, [Word|Words], R):- member(Word, Result),
-%%                                  !,
-%%                                  occurance(Text, Words, R).
-%%occurance(Text, [Word|Words], [R|Rs]):- count(Text, Word, Occ),
-%%                                        addElement([Word, Occ], R, R)
-%%                                        occurance(Text, Words, Rs).
+%%%% Prädikat
+%% occurance(+Text,?FreqList)
+occurance(Text,FreqList) :-
+    occurance(Text,[],Text,[],FreqList). % SoFar und Acc von [] an
 
-occurance(Text, Words, R):- sort(Words, Set),
-                            occurance_set(Text, Set, R).
-occurance_set(_, [], []).
-occurance_set(Text, [Word|Words], [R|Rs]):- count(Text, Word, Occ),
-                                            append([Word, Occ], R),
-                                            occurance_set(Text, Words, Rs).
+occurance([],_,_,Acc,FreqList) :- 
+    reverse(Acc,FreqList). % Abbruchbedingung, Acc umkehren
 
-count(L, E, N) :-
-    include(=(E), L, L2), length(L2, N).
+occurance([Word|Words],SoFar,Text,Acc,FreqList) :-
+    member(Word,SoFar),   % Word bereits im Text vorgekommen
+    occurance(Words,SoFar,Text,Acc,FreqList). % Word ignorieren
+
+occurance([Word|Words],SoFar,Text,Acc,FreqList) :-
+    not(member(Word,SoFar)), % Word noch nicht im Text vorgekommen
+    findall(Word,member(Word,Text),WordList),
+    length(WordList,N),      % Häufigkeit von Word im Text
+    occurance(Words,[Word|SoFar],Text,[[Word,N]|Acc],FreqList).
+
+/*
+%%%% Testfall
+%% occurance(+Text,-FreqList)
+?- text(6,T),occurance(T,F).
+
+F = [[bei, 2], [drei, 1], [terroranschlägen, 1], [sind, 1], [in, 4], 
+[bagdad, 2], [kurz, 1], [hintereinander, 1], [mindestens, 1], [33, 1], 
+[menschen, 2], [ums, 1], [leben, 1], [gekommen, 1], [('.'), 5], 
+[mehr, 1], [als, 1], [50, 1], [iraker, 2], [wurden, 1], [verletzt, 1], 
+[ein, 2], [selbstmordattentäter, 1], [riss, 1], [vor, 1], [einem, 2], 
+[rekrutierungsbüro, 1], [der, 1], [polizei, 2], [west, 1], [28, 1], 
+[mit, 1], [den, 1], [tod, 1], [wie, 1], [die, 1], [weiter, 1], 
+[mitteilte, 1], [(','), 1], [starben, 1], [einer, 1], [weiteren, 1], 
+[attacke, 1], [auf, 1], [eine, 1], [polizeipatrouille, 1], [im, 1], 
+[stadtzentrum, 1], [vier, 1], [weiterer, 1], [sprengsatz, 1], 
+[detonierte, 1], [schnellrestaurant, 1]],
+
+T = [bei, drei, terroranschlägen, sind, in, bagdad, kurz, 
+hintereinander, mindestens, 33, menschen, ums, leben, gekommen, ('.'), 
+mehr, als, 50, iraker, wurden, verletzt, ('.'), ein, 
+selbstmordattentäter, riss, vor, einem, rekrutierungsbüro, der, 
+polizei, in, west, bagdad, 28, iraker, mit, in, den, tod, ('.'), wie, 
+die, polizei, weiter, mitteilte, (','), starben, bei, einer, weiteren, 
+attacke, auf, eine, polizeipatrouille, im, stadtzentrum, vier, 
+menschen, ('.'), ein, weiterer, sprengsatz, detonierte, in, einem, 
+schnellrestaurant, ('.')];
+false.
+*/
     
 /*====================*/
 /*==== Aufgabe 3 =====*/
