@@ -26,7 +26,7 @@ my_char_type(_,special).
 /*---- Hilfs-Prädikate ----*/
 
 % lower_case(+C,?L)
-% Setzt einen ASCII Buchstaben ins lower_case
+% Setzt einen ASCII Buchstaben ins lowercase
 
 lower_case(X,Y) :-
 	X >= 65,
