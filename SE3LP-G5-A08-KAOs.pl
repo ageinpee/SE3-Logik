@@ -205,7 +205,7 @@ rule(Input,Response) :-
     pat_match(Input,[['I',remember,that],
                      ['I',_,remember,that],
                      ['I',recall,that],
-                     ['I',recall,that]],[remember,recall],1,X),
+                     ['I',_,recall,that]],[remember,recall],1,X),
     viewpoint(X,Y),
 	random_member(
     	Response, % Reaktion zufällig auswählen
@@ -216,7 +216,7 @@ rule(Input,Response) :-
     pat_match(Input,[['I',remember],
                      ['I',_,remember],
                      ['I',recall],
-                     ['I',recall]],[remember,recall],1,X),
+                     ['I',_,recall]],[remember,recall],1,X),
     viewpoint(X,Y),
 	random_member(
     	Response, % Reaktion zufällig auswählen
