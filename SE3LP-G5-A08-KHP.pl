@@ -1,5 +1,6 @@
-% SE3LP-18W-A08
-
+/* SE3LP-18W-A08
+  Namen: Chung-Shan Kao, Harm Matthias Harms, Henrik Peters
+*/
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -18,17 +19,17 @@
 sublis(Input,Response) :-
     rule(Input,ResList),	   % Reaktion zufällig auswählen
     !,						   % Abbruch wenn 1. Regel gefunden
-    flatten(ResList,Response). % Reaktion als Liste verflachen			
+    flatten(ResList,Response). % Reaktion als Liste verflachen
 
 /*
 %% Testfall
 ?- sublis(['I',dreamt,about,winning,a,lottery],Response).
-Response = [['Have', you, ever, fantasized], 
-			[about, winning, a, lottery], 
+Response = [['Have', you, ever, fantasized],
+			[about, winning, a, lottery],
             [while, you, were, awake, (?)]].
 
 ?- sublis(['I',dreamt,about,winning,a,lottery],Response).
-Response = [['Have', you, ever, dreamt], 
+Response = [['Have', you, ever, dreamt],
 			[about, winning, a, lottery], [(?)]].
 */
 
@@ -67,13 +68,13 @@ respond(Input) :-
 % atomic_list_concat(?List,+Separator,?Atom)
 
 % remove_punctuation(StringOld,StringNew)
-remove_punctuation(X,Y) :- 
+remove_punctuation(X,Y) :-
     atom_chars(X,Xs), remove_punct(Xs,[],Ys), atom_chars(Y,Ys).
 
 remove_punct([],Acc,Ys) :- reverse(Acc,Ys),!. % Abbruch
 remove_punct([H|T],Acc,Ys) :-
     member(H,[',','.','?','!']), % mögliche Interpunktion
-    remove_punct(T,Acc,Ys),!.    
+    remove_punct(T,Acc,Ys),!.
 remove_punct([H|T],Acc,Ys) :-
     remove_punct(T,[H|Acc],Ys).
 
@@ -124,13 +125,13 @@ viewpoint([mine|Rest],Acc,OutputList) :-  % 'mine' durch 'yours' ersetzen
     viewpoint(Rest,[yours|Acc],OutputList).
 
 % 2. Person zur 1. Person
-viewpoint([Conj,you,are|Rest],Acc,OutputList) :-  
+viewpoint([Conj,you,are|Rest],Acc,OutputList) :-
     check_conj(Conj), % 'you are' nach Konj. durch 'I am' ersetzen
     viewpoint(Rest,[am,'I',Conj|Acc],OutputList).
-viewpoint([Conj,you,were|Rest],Acc,OutputList) :-  
+viewpoint([Conj,you,were|Rest],Acc,OutputList) :-
     check_conj(Conj), % 'you were' nach Konj. durch 'I was' ersetzen
     viewpoint(Rest,[was,'I',Conj|Acc],OutputList).
-viewpoint([Conj,you,Word|Rest],Acc,OutputList) :-  
+viewpoint([Conj,you,Word|Rest],Acc,OutputList) :-
     check_conj(Conj),                     % 'you' durch 'I' ersetzen
     not(member(Word,[are,were])),
     viewpoint(Rest,[Word,'I',Conj|Acc],OutputList).
@@ -140,7 +141,7 @@ viewpoint([your|Rest],Acc,OutputList) :-  % 'your' durch 'my' ersetzen
     viewpoint(Rest,[my|Acc],OutputList).
 viewpoint([yours|Rest],Acc,OutputList) :- % 'yours' durch 'mine' ersetzen
     viewpoint(Rest,[mine|Acc],OutputList).
-    
+
 viewpoint([Word|Rest],Acc,OutputList) :-  % sonst keine Änderung
     viewpoint(Rest,[Word|Acc],OutputList).
 
@@ -158,7 +159,7 @@ check_conj(Word) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /*
-Die Regeln basieren auf den Lehrmaterialien des Moduls 
+Die Regeln basieren auf den Lehrmaterialien des Moduls
 SE3 Funktionale Programmierung WiSe 2018/2019 an der UHH
 von Prof. Dr. Leonie Dreschler-Fischer.
 
@@ -167,7 +168,7 @@ Fakten aufgestellt. Stattdessen variiert der Mustervergleich von Regel
 zu Regel.
 */
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     member(Input,[['Hello'|_],
                   ['Hi'|_],
                   ['How',do,you,do|_]]),
@@ -175,7 +176,7 @@ rule(Input,Response) :-
         Response, % Reaktion zufällig auswählen
         [['How do you do? Please state your problem.']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
 	member(Word,[computer,computers]),
     member(Word,Input),!,
 	random_member(
@@ -183,25 +184,25 @@ rule(Input,Response) :-
         [['Do computers worry you?'],
          ['What do you think about machines?'],
          ['Why do you mention computers?'],
-         ['Waht do you think machines have to do with your problem?']]).        
+         ['Waht do you think machines have to do with your problem?']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
     member(Word,[name,names]),
 	member(Word,Input),!,
 	random_member(
     	Response, % Reaktion zufällig auswählen
-        [['I am not interest in names.']]).        
+        [['I am not interest in names.']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
 	member(Word,[sorry,'Sorry']),
     member(Word,Input),!,
 	random_member(
     	Response, % Reaktion zufällig auswählen
         [['Please do not apologize.'],
          ['Apologies are not necessary.'],
-         ['What feelings do you have when you apologize?']]).        
+         ['What feelings do you have when you apologize?']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
     pat_match(Input,[['I',remember,that],
                      ['I',_,remember,that],
                      ['I',recall,that],
@@ -210,9 +211,9 @@ rule(Input,Response) :-
 	random_member(
     	Response, % Reaktion zufällig auswählen
         [['What else do you remember?'],
-         ['Why do you recall',Y,'right now?']]).        
+         ['Why do you recall',Y,'right now?']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
     pat_match(Input,[['I',remember],
                      ['I',_,remember],
                      ['I',recall],
@@ -223,9 +224,9 @@ rule(Input,Response) :-
         [['Do you often think of',Y,'?'],
          ['Does thinking of',Y,'bring you anything else to mind?'],
          ['What in the present situation reminds you of',Y,'?'],
-         ['What is the connection between me and',Y,'?']]).        
+         ['What is the connection between me and',Y,'?']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
     pat_match(Input,[['Do',you,remember,that],
                      ['Dont',you,remember,that],
                      ['Do',you,recall,that],
@@ -234,9 +235,9 @@ rule(Input,Response) :-
 	random_member(
     	Response, % Reaktion zufällig auswählen
         [['Did you think I would forget',Y,'?'],
-         ['Why do you think I should recall',Y,'now?']]).        
+         ['Why do you think I should recall',Y,'now?']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
     pat_match(Input,[['Do',you,remember],['Dont',you,remember],
                      ['Do',you,recall],['Dont',you,recall]],
              [remember,recall],1,X),
@@ -244,9 +245,9 @@ rule(Input,Response) :-
 	random_member(
     	Response, % Reaktion zufällig auswählen
         [['What about',Y,'?'],
-         ['You mentioned',Y,'.']]).        
+         ['You mentioned',Y,'.']]).
 
-rule(Input,Response) :- 
+rule(Input,Response) :-
     pat_match(Input,[[if],[whether]],[if,whether],2,X),
     viewpoint(X,[_|Y]),
 	random_member(
@@ -254,7 +255,7 @@ rule(Input,Response) :-
         [['Do you really think it is likely that',Y,'?'],
          ['Do you wish that',Y,'?'],
          ['What do you think about that',Y,'?'],
-         ['Really -- if',Y,'?']]).        
+         ['Really -- if',Y,'?']]).
 
 rule(Input,Response) :-
     member(Sub,[[my,mother],['My',mother],[my,mom],['My',mom]]),
@@ -263,8 +264,8 @@ rule(Input,Response) :-
         Response, % Reaktion zufällig auswählen
         [['Who else in your family?'],
          ['Tell me more about your family.']]).
- 
-rule(Input,Response) :- 
+
+rule(Input,Response) :-
     member(Sub,[[my,father],['My',father]]),
     sublist(Sub,Input),!, % 'my father' in der Eingabe
     random_member(
@@ -272,7 +273,7 @@ rule(Input,Response) :-
         [['Does he influence you strongly?'],
          ['What else comes to mind when you think of your father?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',dreamt],['I',_,dreamt],['I',kept,dreaming]],
               [dreamt,dreaming],1,X),
     viewpoint(X,Y),
@@ -282,7 +283,7 @@ rule(Input,Response) :-
          ['Have you ever fantasized',Y,'while you are awake?'],
          ['Have you ever dreamt',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[dream,about],[dream,of],[dream,_,about]],
               [dream],2,X),
     viewpoint(X,Y),
@@ -290,7 +291,7 @@ rule(Input,Response) :-
         Response, % Reaktion zufällig auswählen
         [['How do you feel about',Y,'in reality?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     member(dream,Input),!,
     random_member(
         Response, % Reaktion zufällig auswählen
@@ -299,7 +300,7 @@ rule(Input,Response) :-
          ['What persons appear in your dream?'],
          ['Do you believe that dream has to do with your problem?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',want],['I',_,want],
                      ['I',wanted],['I',_,wanted],
                      ['I',need],['I',_,need],
@@ -312,7 +313,7 @@ rule(Input,Response) :-
          ['Why do you want',Y,'?'],
          ['Supose you got',Y,'soon.']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',_,glad],['I',_,_,glad]],[glad],1,X),
     viewpoint(X,Y),
     random_member(
@@ -321,14 +322,14 @@ rule(Input,Response) :-
          ['What makes you happy just now',Y,'?'],
          ['Can you explain why you are suddenly happy',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     member(sad,Input),!,
     random_member(
         Response, % Reaktion zufällig auswählen
         [['I am sorry to hear you are depressed.'],
          ['I am sure it is not pleasant to be sad.']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[are,like],[are,_,like],[are,the,same,as],
                      [are,_,the,same,as]],[like,as],1,X),
     nth0(N,Input,are),
@@ -340,7 +341,7 @@ rule(Input,Response) :-
         [['What resemblance do you see between',Y,'and',X,'?'],
          ['What other connections do you see?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['is',like],['is',_,like],['is',the,same,as],
                      ['is',_,the,same,as]],[like,as],1,X),
     nth0(N,Input,'is'),
@@ -354,7 +355,7 @@ rule(Input,Response) :-
          ['Could there realy be some connection?'],
          ['How?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     member(alike,Input),!,
     random_member(
         Response, % Reaktion zufällig auswählen
@@ -369,7 +370,7 @@ rule(Input,Response) :-
         [['Why do you say \'am\'?'],
          ['I do not understand that.']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',was],['I',_,was]],[was],1,X),
     viewpoint(X,Y),
     random_member(
@@ -378,7 +379,7 @@ rule(Input,Response) :-
          ['Perhaps I already knew why you were',Y,'.'],
          ['Why do you tell me you were',Y,'now?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[was,'I'],['Was','I']],['I'],1,X),
     viewpoint(X,Y),
     random_member(
@@ -387,7 +388,7 @@ rule(Input,Response) :-
          ['Do you think you were',Y,'?'],
          ['What would it mean that you were',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',am],['I',_,am]],['am'],1,X),
     viewpoint(X,Y),
     random_member(
@@ -395,7 +396,7 @@ rule(Input,Response) :-
         [['In what way are you',Y,'?'],
          ['Do you want to be',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[am,'I'],['Am','I']],['I'],1,X),
     viewpoint(X,Y),
     random_member(
@@ -404,7 +405,7 @@ rule(Input,Response) :-
          ['Would you want to be',Y,'?'],
          ['You wish I would tell you you are',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[are,you],['Are',you]],[you],1,X),
     viewpoint(X,Y),
     random_member(
@@ -413,14 +414,14 @@ rule(Input,Response) :-
          ['Would you prefer if I were not',Y,'?'],
          ['Perhaps I am',Y,'in your fantasies.']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[you,are],['You',are]],[are],1,X),
     viewpoint(X,Y),
     random_member(
         Response, % Reaktion zufällig auswählen
         [['What makes you think I am',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     member(because,Input),!,
     random_member(
         Response, % Reaktion zufällig auswählen
@@ -428,7 +429,7 @@ rule(Input,Response) :-
          ['What other reasons might there be?'],
          ['Does that reason seem to explain anything else?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[were,you],['Were',you]],[you],1,X),
     viewpoint(X,Y),
     random_member(
@@ -437,7 +438,7 @@ rule(Input,Response) :-
          ['What do you think?'],
          ['What if I had been',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',cannot],['I',can,not]],[cannot,not],1,X),
     viewpoint(X,Y),
     random_member(
@@ -445,7 +446,7 @@ rule(Input,Response) :-
         [['Maybe you could',Y,'now.'],
          ['What if you could',Y,'?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',feel],['I',felt],['I',_,feel],
                      ['I',_,felt]],[feel,felt],1,X),
     viewpoint(X,Y),
@@ -454,14 +455,14 @@ rule(Input,Response) :-
         [['Do you often feel',Y,'?'],
          ['What other feelings do you have?']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[['I',_,you]],[you],-1,X),
     nth0(0,X,Y),
     random_member(
         Response, % Reaktion zufällig auswählen
         [['Perhaps in you fantasy we',Y,'each other.']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[why,dont,you],['Why',dont,you]],[you],1,X),
     viewpoint(X,Y),
     random_member(
@@ -534,7 +535,7 @@ rule(Input,Response) :-
         Response, % Reaktion zufällig auswählen
         [['You do not seem quite certain.']]).
 
-rule(Input,Response) :-  
+rule(Input,Response) :-
     pat_match(Input,[[are],['Are']],[are,'Are'],1,X),
     viewpoint(X,Y),
     random_member(
@@ -815,3 +816,50 @@ Are you saying 'no' just to be negative?
 
 true.
 */
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                                                              %%%%
+%%%% Aufgabe 2: Synthese grafischer Objekte mit XPCE              %%%%
+%%%%                                                              %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+consult('grafik.pl').
+
+%% produces an Image of red and blue christmas baubles on a christmastree
+%% covered in snow, categorized as contemporary art.
+baubles :-
+    new(P, picture('demo')),
+    send(P, open),
+
+    send(P, display, new(@baub1, circle(50)), point(180, 200)),
+    send(@baub1, fill_pattern(colour(red))),
+
+    send(P, display, new(@baub2, circle(40)), point(100, 130)),
+    send(@baub2, fill_pattern(colour(blue))),
+
+    send(P, display, new(@baub3, circle(30)), point(100, 250)),
+    send(@baub3, fill_pattern(colour(red))),
+
+    send(P, display, new(@baub4, circle(20)), point(150, 50)),
+    send(@baub4, fill_pattern(colour(blue))),
+
+    send(P, display, new(@baub5, circle(40)), point(200, 400)),
+    send(@baub5, fill_pattern(colour(blue))),
+
+    send(P, display, new(@baub6, circle(50)), point(150, 450)),
+    send(@baub6, fill_pattern(colour(red))),
+
+    send(P, display, new(@baub7, circle(30)), point(100, 350)),
+    send(@baub7, fill_pattern(colour(red))),
+
+    send(P, display, new(@baub8, circle(20)), point(200, 300)),
+    send(@baub8, fill_pattern(colour(blue))),
+
+    send(P, display, new(@tree1, line(150, 20, 300, 500))),
+    send(P, display, new(@tree2, line(300, 500, 0, 500))),
+    send(P, display, new(@tree3, line(0, 500, 150, 20))).
+
+?- baubles.
