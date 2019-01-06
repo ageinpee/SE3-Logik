@@ -37,6 +37,9 @@ Response = [['Have', you, ever, dreamt],
 % chatbot\0
 chatbot :-
     write_ln('\nWELCOME to Chat-Bot!'),
+    write_ln('\nCHAT LANGUAGE'),
+    write_ln('\tThe Chat-Bot chats only in English.'),
+    write_ln('\tSo your inputs have also to be in English :)'),
     write_ln('\nINPUT FORMAT'),
     write_ln('\tEach input is a simple sentence, phrase, or a word.'),
     write_ln('\tPlease submit the input in single quotation marks.'),
@@ -557,12 +560,12 @@ rule(_,Response) :- % kein vorhandes Muster in Eingabe gefunden
 %%%% Testfälle durchführen                                        %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Die Eingabesätze in den Testfällen stammen aus den Lehrmaterialien
-% des Moduls SE3 Funktionale Programmierung WiSe 2018/2019 an der UHH
-% von Prof. Dr. Leonie Dreschler-Fischer.
+% Die Eingabesätze in den folgenden vorgeführten Testfällen stammen 
+% aus den Lehrmaterialien des Moduls SE3 Funktionale Programmierung 
+% WiSe 2018/2019 an der UHH von Prof. Dr. Leonie Dreschler-Fischer.
 
-% Im 1. Test sind die Eingabesätze Teil des damaligen Gesprächs mit
-% Eliza, ein Programm von Joseph Weizenbaum.
+% Im 1. Testfall sind die Eingabesätze Teil des damaligen Gesprächs 
+% mit Eliza, ein Programm von Joseph Weizenbaum.
 
 /*
 ?- chatbot.
@@ -863,3 +866,6 @@ baubles :-
     send(P, display, new(@tree3, line(0, 500, 150, 20))).
 
 ?- baubles.
+
+?- chatbot.
+
